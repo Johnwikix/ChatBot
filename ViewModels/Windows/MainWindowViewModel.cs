@@ -27,7 +27,7 @@ namespace wpfChat.ViewModels.Windows
             {
                 Content = "Chart",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Chat32 },
-                TargetPageType = typeof(Views.Pages.DataPage)
+                TargetPageType = typeof(Views.Pages.ChatPage)
             }
         };
 

@@ -4,11 +4,11 @@ using wpfChat.ViewModels.Pages;
 
 namespace wpfChat.Views.Pages
 {
-    public partial class DataPage : INavigableView<ChatViewModel>
+    public partial class ChatPage : INavigableView<ChatViewModel>
     {
         public ChatViewModel ViewModel { get; }
 
-        public DataPage(ChatViewModel viewModel)
+        public ChatPage(ChatViewModel viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Wpf.Ui;
 using Wpf.Ui.DependencyInjection;
+using wpfChat.LLM;
 using wpfChat.Services;
 using wpfChat.ViewModels.Pages;
 using wpfChat.ViewModels.Windows;
@@ -45,10 +46,13 @@ namespace wpfChat
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();
                 services.AddSingleton<MainWindowViewModel>();
+                // 添加LLM服务
+                services.AddSingleton<LLMService>(_ =>
+                    new LLMService(@"D:\LLmModel\llama-2-7b.Q4_0.gguf"));
 
                 services.AddSingleton<DashboardPage>();
                 services.AddSingleton<DashboardViewModel>();
-                services.AddSingleton<DataPage>();
+                services.AddSingleton<ChatPage>();
                 services.AddSingleton<ChatViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();

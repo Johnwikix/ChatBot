@@ -4,16 +4,23 @@ using System.Windows.Media;
 using Wpf.Ui.Abstractions.Controls;
 using wpfChat.Models;
 using System.Diagnostics;
+using wpfChat.LLM;
 
 namespace wpfChat.ViewModels.Pages
 {
     public partial class ChatViewModel : ObservableObject, INavigationAware
     {
+        private readonly LLMService _llmService;
         private bool _isInitialized = false;
 
         [ObservableProperty]
         private IEnumerable<DataColor> _colors;
         public EventHandler<string> updateResultEvent;
+
+        public ChatViewModel(LLMService llmService)
+        {
+            _llmService = llmService;
+        }
 
         public Task OnNavigatedToAsync()
         {
@@ -52,7 +59,9 @@ namespace wpfChat.ViewModels.Pages
 
         public async Task<string> SendMessage(string message)
         {
-            return await StartModel(message);
+            string response = await _llmService.SendMessageAsync(message);
+            updateResultEvent?.Invoke(this, response);
+            return response;
         }
 
         private async Task<string> StartModel(string input) {
