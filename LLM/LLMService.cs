@@ -10,20 +10,27 @@ namespace wpfChat.LLM
 {
     public class LLMService : IDisposable
     {
-        private readonly LLamaWeights _model;
-        private readonly InteractiveExecutor _executor;
-        private readonly ChatHistory _chatHistory;
-        private readonly InferenceParams _inferenceParams;
+        private LLamaWeights _model;
+        private InteractiveExecutor _executor;
+        private ChatHistory _chatHistory;
+        private InferenceParams _inferenceParams;
+        public EventHandler<string> updateResult;
+        public EventHandler<bool> isModelLoaded;
 
         public LLMService(string modelPath)
-        {
-            // 配置模型参数
-            var parameters = new ModelParams(modelPath)
+        {    
+            Task.Run(() => {
+                InitializingModel(modelPath);
+            });            
+        }
+
+        private void InitializingModel(string modelPath) {
+            isModelLoaded?.Invoke(this, false); // 模型加载开始事件
+            ModelParams parameters = new ModelParams(modelPath)
             {
                 ContextSize = 1024,
                 GpuLayerCount = 5,
             };
-
             // 加载模型
             _model = LLamaWeights.LoadFromFile(parameters);
             var context = _model.CreateContext(parameters);
@@ -31,7 +38,7 @@ namespace wpfChat.LLM
 
             // 初始化对话历史
             _chatHistory = new ChatHistory();
-            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。Bob乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
+            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。智能体乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
             _chatHistory.AddMessage(AuthorRole.User, "你好智能体");
             _chatHistory.AddMessage(AuthorRole.Assistant, "你好。今天我能帮你什么吗？");
 
@@ -41,6 +48,7 @@ namespace wpfChat.LLM
                 MaxTokens = 256,
                 AntiPrompts = new List<string> { "User:" }
             };
+            isModelLoaded?.Invoke(this, true); // 模型加载完成事件
         }
 
         // 发送消息并获取回复
@@ -56,6 +64,7 @@ namespace wpfChat.LLM
                     _inferenceParams))
                 {
                     response += text;
+                    updateResult?.Invoke(this, response); // 更新结果
                 }
 
                 // 将对话添加到历史记录
@@ -74,7 +83,7 @@ namespace wpfChat.LLM
         // 重置对话历史
         public void ResetChatHistory()
         {
-            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。Bob乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
+            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。智能体乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
         }
 
         // 释放资源

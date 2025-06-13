@@ -16,10 +16,20 @@ namespace wpfChat.ViewModels.Pages
         [ObservableProperty]
         private IEnumerable<DataColor> _colors;
         public EventHandler<string> updateResultEvent;
+        public EventHandler<bool> isModelLoadedEvent;
 
         public ChatViewModel(LLMService llmService)
         {
             _llmService = llmService;
+            _llmService.updateResult += (sender, result) =>
+            {
+                updateResultEvent?.Invoke(this, result);
+            };
+            _llmService.isModelLoaded += (sender, isLoaded) =>
+            {
+                isModelLoadedEvent?.Invoke(this, isLoaded);
+            };
+
         }
 
         public Task OnNavigatedToAsync()
@@ -60,64 +70,7 @@ namespace wpfChat.ViewModels.Pages
         public async Task<string> SendMessage(string message)
         {
             string response = await _llmService.SendMessageAsync(message);
-            updateResultEvent?.Invoke(this, response);
             return response;
-        }
-
-        private async Task<string> StartModel(string input) {
-
-            string modelPath = @"D:\LLmModel\llama-2-7b.Q4_0.gguf"; // change it to your own model path.
-
-            var parameters = new ModelParams(modelPath)
-            {
-                ContextSize = 1024, // The longest length of chat as memory.
-                GpuLayerCount = 5 // How many layers to offload to GPU. Please adjust it according to your GPU memory.
-            };
-            using var model = LLamaWeights.LoadFromFile(parameters);
-            using var context = model.CreateContext(parameters);
-            var executor = new InteractiveExecutor(context);
-            var chatHistory = new ChatHistory();
-            chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。Bob乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
-            chatHistory.AddMessage(AuthorRole.User, "你好智能体");
-            chatHistory.AddMessage(AuthorRole.Assistant, "你好。今天我能帮你什么吗？");
-
-            ChatSession session = new(executor, chatHistory);
-
-            InferenceParams inferenceParams = new InferenceParams()
-            {
-                MaxTokens = 256, // No more than 256 tokens should appear in answer. Remove it if antiprompt is enough for control.
-                AntiPrompts = new List<string> { "User:" } // Stop generation once antiprompts appear.
-            };
-
-            //Console.ForegroundColor = ConsoleColor.Yellow;
-            //Console.Write("The chat session has started.\nUser: ");
-            //Console.ForegroundColor = ConsoleColor.Green;
-            string userInput = input;
-            string response = string.Empty;
-            await foreach (var text in session.ChatAsync(
-                        new ChatHistory.Message(AuthorRole.User, userInput),
-                        inferenceParams))
-            {                
-                response += text;
-                updateResultEvent?.Invoke(this, response);
-            }
-
-            return response;
-
-            //while (userInput != "exit")
-            //{
-            //    await foreach ( // Generate the response streamingly.
-            //        var text
-            //        in session.ChatAsync(
-            //            new ChatHistory.Message(AuthorRole.User, userInput),
-            //            inferenceParams))
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.White;
-            //        Console.Write(text);
-            //    }
-            //    Console.ForegroundColor = ConsoleColor.Green;
-            //    userInput = Console.ReadLine() ?? "";
-            //}
         }
     }
 }
