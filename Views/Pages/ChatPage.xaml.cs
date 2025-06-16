@@ -53,7 +53,7 @@ namespace wpfChat.Views.Pages
                     }
                 });
             };
-            AddRichTextBoxLine("智能体：你好。今天我能帮你什么吗？", true);
+            AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
         }
 
         private void ProcessBuffer()

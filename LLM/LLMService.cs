@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.IO;
 
 namespace wpfChat.LLM
 {
@@ -18,18 +20,28 @@ namespace wpfChat.LLM
         public EventHandler<bool> isModelLoaded;
 
         public LLMService(string modelPath)
-        {    
-            Task.Run(() => {
-                InitializingModel(modelPath);
-            });            
+        {
+            if (!string.IsNullOrEmpty(modelPath) && File.Exists(modelPath))
+            {
+                Task.Run(() =>
+                {
+                    InitializingModel(modelPath);
+                });
+            }
+            else { 
+                Debug.WriteLine("模型路径为空，无法加载模型。请检查配置。");
+            }                  
         }
 
         private void InitializingModel(string modelPath) {
             isModelLoaded?.Invoke(this, false); // 模型加载开始事件
+            int gpuCount = 1; // 通常为1个GPU
+            int totalLayers = 32; // 模型总层数，不同模型该值不同，需调整
             ModelParams parameters = new ModelParams(modelPath)
             {
                 ContextSize = 1024,
-                GpuLayerCount = 5,
+                GpuLayerCount = totalLayers, // 将所有层都加载到GPU
+                UseMemorymap = true   // 使用内存映射，提高加载速度
             };
             // 加载模型
             _model = LLamaWeights.LoadFromFile(parameters);
@@ -64,6 +76,7 @@ namespace wpfChat.LLM
                     _inferenceParams))
                 {
                     response += text;
+                    Debug.WriteLine(response);
                     updateResult?.Invoke(this, response); // 更新结果
                 }
 

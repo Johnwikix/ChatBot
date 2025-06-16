@@ -15,7 +15,7 @@ namespace wpfChat.ViewModels.Windows
             {
                 Content = "Model",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.FolderAdd24 },
-                TargetPageType = typeof(Views.Pages.DashboardPage)
+                TargetPageType = typeof(Views.Pages.HomePage)
             },
             //new NavigationViewItem()
             //{

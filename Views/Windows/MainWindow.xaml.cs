@@ -1,7 +1,9 @@
-﻿using Wpf.Ui;
+﻿using System.Windows.Navigation;
+using Wpf.Ui;
 using Wpf.Ui.Abstractions;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
+using wpfChat.Data;
 using wpfChat.ViewModels.Windows;
 
 namespace wpfChat.Views.Windows
@@ -18,13 +20,11 @@ namespace wpfChat.Views.Windows
         {
             ViewModel = viewModel;
             DataContext = this;
-
             SystemThemeWatcher.Watch(this);
-
-            InitializeComponent();
+            InitializeComponent();            
             SetPageService(navigationViewPageProvider);
-
             navigationService.SetNavigationControl(RootNavigation);
+            
         }
 
         #region INavigationWindow methods

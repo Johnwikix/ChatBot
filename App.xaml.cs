@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Wpf.Ui;
 using Wpf.Ui.DependencyInjection;
+using wpfChat.Data;
 using wpfChat.LLM;
+using wpfChat.Models;
 using wpfChat.Services;
 using wpfChat.ViewModels.Pages;
 using wpfChat.ViewModels.Windows;
@@ -31,14 +33,16 @@ namespace wpfChat
             .ConfigureServices((context, services) =>
             {
                 services.AddNavigationViewPageProvider();
+                // 1. 首先注册数据库初始化服务，并同时注册为单例供其他服务使用
+                services.AddSingleton<DatabaseInitializationService>();
+                services.AddHostedService<DatabaseInitializationService>(provider =>
+                    provider.GetRequiredService<DatabaseInitializationService>());
 
                 services.AddHostedService<ApplicationHostService>();
-
                 // Theme manipulation
                 services.AddSingleton<IThemeService, ThemeService>();
-
                 // TaskBar manipulation
-                services.AddSingleton<ITaskBarService, TaskBarService>();
+                services.AddSingleton<ITaskBarService, TaskBarService>();               
 
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
@@ -47,11 +51,11 @@ namespace wpfChat
                 services.AddSingleton<INavigationWindow, MainWindow>();
                 services.AddSingleton<MainWindowViewModel>();
                 // 添加LLM服务
+                //services.AddHostedService<DatabaseInitializationService>();
                 services.AddSingleton<LLMService>(_ =>
-                    new LLMService(@"D:\LLmModel\llama-2-7b.Q4_0.gguf"));
-
-                services.AddSingleton<DashboardPage>();
-                services.AddSingleton<DashboardViewModel>();
+                    new LLMService(AppConfig.ModelPath));
+                services.AddSingleton<HomePage>();
+                services.AddSingleton<HomeViewModel>();
                 services.AddSingleton<ChatPage>();
                 services.AddSingleton<ChatViewModel>();
                 services.AddSingleton<SettingsPage>();
