@@ -60,6 +60,7 @@ namespace wpfChat.LLM
                 MaxTokens = 256,
                 AntiPrompts = new List<string> { "User:" }
             };
+            Debug.WriteLine("模型加载完成。");
             isModelLoaded?.Invoke(this, true); // 模型加载完成事件
         }
 

@@ -34,25 +34,7 @@ namespace wpfChat.Views.Pages
                     _displayText = _displayText.Substring(0, endIndex >= 0 ? endIndex : 0).TrimEnd();
                     UpdateLastestLine($"智能体：{_displayText}");
                 });
-            };
-            viewModel.isModelLoadedEvent += (sender, isLoaded) =>
-            {
-                Dispatcher.BeginInvoke(() =>
-                {
-                    if (isLoaded)
-                    {
-                        SendTextBox.IsEnabled = true;
-                        SendBtn.IsEnabled = true;
-                        SendBtn.Content = "发送消息";
-                    }
-                    else
-                    {
-                        SendTextBox.IsEnabled = false;
-                        SendBtn.IsEnabled = false;
-                        SendBtn.Content = "模型加载中...";
-                    }
-                });
-            };
+            };            
             AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
         }
 

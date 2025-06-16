@@ -14,9 +14,12 @@ namespace wpfChat.ViewModels.Pages
         private bool _isInitialized = false;
 
         [ObservableProperty]
-        private IEnumerable<DataColor> _colors;
+        private bool _isModelReady = false;
+
+        [ObservableProperty]
+        private string _buttonText = "模型加载中...";
+
         public EventHandler<string> updateResultEvent;
-        public EventHandler<bool> isModelLoadedEvent;
 
         public ChatViewModel(LLMService llmService)
         {
@@ -27,45 +30,45 @@ namespace wpfChat.ViewModels.Pages
             };
             _llmService.isModelLoaded += (sender, isLoaded) =>
             {
-                isModelLoadedEvent?.Invoke(this, isLoaded);
+                IsModelReady = isLoaded;
+                ButtonText = isLoaded ? "发送消息" : "模型加载中...";
             };
-
         }
 
         public Task OnNavigatedToAsync()
         {
-            if (!_isInitialized)
-                InitializeViewModel();
+            //if (!_isInitialized)
+            //    InitializeViewModel();
 
             return Task.CompletedTask;
         }
 
         public Task OnNavigatedFromAsync() => Task.CompletedTask;
 
-        private void InitializeViewModel()
-        {
-            var random = new Random();
-            var colorCollection = new List<DataColor>();
+        //private void InitializeViewModel()
+        //{
+        //    var random = new Random();
+        //    var colorCollection = new List<DataColor>();
 
-            for (int i = 0; i < 8192; i++)
-                colorCollection.Add(
-                    new DataColor
-                    {
-                        Color = new SolidColorBrush(
-                            Color.FromArgb(
-                                (byte)200,
-                                (byte)random.Next(0, 250),
-                                (byte)random.Next(0, 250),
-                                (byte)random.Next(0, 250)
-                            )
-                        )
-                    }
-                );
+        //    for (int i = 0; i < 8192; i++)
+        //        colorCollection.Add(
+        //            new DataColor
+        //            {
+        //                Color = new SolidColorBrush(
+        //                    Color.FromArgb(
+        //                        (byte)200,
+        //                        (byte)random.Next(0, 250),
+        //                        (byte)random.Next(0, 250),
+        //                        (byte)random.Next(0, 250)
+        //                    )
+        //                )
+        //            }
+        //        );
 
-            Colors = colorCollection;
+        //    Colors = colorCollection;
 
-            _isInitialized = true;
-        }
+        //    _isInitialized = true;
+        //}
 
         public async Task<string> SendMessage(string message)
         {

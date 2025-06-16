@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="SendTextBox" Margin="10" Grid.Column="0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
-            <Button x:Name="SendBtn" IsEnabled="False" Margin="10" Width="130" Click="SendBtn_Click" Content="loading..." Grid.Column="1" VerticalAlignment="Stretch"/>
+            <Button x:Name="SendBtn" IsEnabled="{Binding ViewModel.IsModelReady, Mode=OneWay}" Margin="10" Width="130" Click="SendBtn_Click" Content="{Binding ViewModel.ButtonText, Mode=OneWay}" Grid.Column="1" VerticalAlignment="Stretch"/>
         </Grid>
         <!--<ui:VirtualizingItemsControl
             Foreground="{DynamicResource TextFillColorSecondaryBrush}"
