@@ -36,7 +36,7 @@ namespace wpfChat.LLM
         private void InitializingModel(string modelPath) {
             isModelLoaded?.Invoke(this, false); // 模型加载开始事件
             int gpuCount = 1; // 通常为1个GPU
-            int totalLayers = 32; // 模型总层数，不同模型该值不同，需调整
+            int totalLayers = 64; // 模型总层数，不同模型该值不同，需调整
             ModelParams parameters = new ModelParams(modelPath)
             {
                 ContextSize = 1024,
@@ -57,7 +57,7 @@ namespace wpfChat.LLM
             // 配置推理参数
             _inferenceParams = new InferenceParams()
             {
-                MaxTokens = 256,
+                MaxTokens = 512,
                 AntiPrompts = new List<string> { "User:" }
             };
             Debug.WriteLine("模型加载完成。");
