@@ -50,8 +50,7 @@ namespace wpfChat
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();
                 services.AddSingleton<MainWindowViewModel>();
-                // 添加LLM服务
-                //services.AddHostedService<DatabaseInitializationService>();
+                // 添加LLM服务;
                 services.AddSingleton<LLMService>(_ =>
                     new LLMService(AppConfig.ModelPath));
                 services.AddSingleton<HomePage>();

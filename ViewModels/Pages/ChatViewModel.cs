@@ -5,6 +5,7 @@ using Wpf.Ui.Abstractions.Controls;
 using wpfChat.Models;
 using System.Diagnostics;
 using wpfChat.LLM;
+using System.IO;
 
 namespace wpfChat.ViewModels.Pages
 {
@@ -18,8 +19,11 @@ namespace wpfChat.ViewModels.Pages
 
         [ObservableProperty]
         private string _buttonText = "模型加载中...";
+        [ObservableProperty]
+        private string _modelPath = string.Empty;
 
         public EventHandler<string> updateResultEvent;
+        public EventHandler clearRichTextBoxEvent;
 
         public ChatViewModel(LLMService llmService)
         {
@@ -32,6 +36,11 @@ namespace wpfChat.ViewModels.Pages
             {
                 IsModelReady = isLoaded;
                 ButtonText = isLoaded ? "发送消息" : "模型加载中...";
+                ModelPath = isLoaded ? AppConfig.ModelPath : "未加载模型";
+                if(!isLoaded)
+                {
+                    clearRichTextBoxEvent?.Invoke(this, EventArgs.Empty); // 清空RichTextBox
+                }
             };
         }
 

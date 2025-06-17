@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using wpfChat.Data;
+using wpfChat.LLM;
 using wpfChat.Models;
+using wpfChat.Services;
 
 
 namespace wpfChat.ViewModels.Pages
@@ -18,8 +20,13 @@ namespace wpfChat.ViewModels.Pages
         [ObservableProperty]
         private LLModel? _selectedModel;
 
-        public HomeViewModel()
+        private readonly LLMService _llmService;
+        //private NotificationService _notificationService;
+
+        public HomeViewModel(LLMService llmService)
         {
+            //_notificationService = new NotificationService();
+            _llmService = llmService;
             // 初始化时加载配置
             initializData();
         }
@@ -69,6 +76,22 @@ namespace wpfChat.ViewModels.Pages
             }
         }
 
+        public void ChangeModel(string modelPath) {
+            _llmService.ChangeModelAsync(modelPath).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    NotificationService.sendToast("模型切换失败", "无法切换到选定的模型，请检查模型文件是否存在或格式是否正确。");
+                    //Debug.WriteLine($"切换模型时出错: {task.Exception?.Message}");
+                }
+                else
+                {
+                    NotificationService.sendToast("模型切换成功", $"已成功切换到{modelPath}");
+                    //Debug.WriteLine("模型已成功切换。");
+                }
+            });
+        }
+
         private void DisplayAndCollectGgufFiles(string folderPath)
         {
             try
@@ -79,7 +102,7 @@ namespace wpfChat.ViewModels.Pages
                 string[] ggufFiles = Directory.GetFiles(folderPath, "*.gguf");
                 foreach (string file in ggufFiles)
                 {
-                    Debug.WriteLine($"找到文件: {file}");
+                    //Debug.WriteLine($"找到文件: {file}");
                     // 创建 LLModel 实例并添加到列表
                     LLModel model = new LLModel
                     {
@@ -96,7 +119,8 @@ namespace wpfChat.ViewModels.Pages
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"访问文件夹时出错: {ex.Message}");
+                NotificationService.sendToast("文件夹访问错误", $"无法访问指定的文件夹: {ex.Message}");
+                //Debug.WriteLine($"访问文件夹时出错: {ex.Message}");
             }
         }
     }

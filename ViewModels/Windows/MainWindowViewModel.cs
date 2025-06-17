@@ -6,14 +6,14 @@ namespace wpfChat.ViewModels.Windows
     public partial class MainWindowViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _applicationTitle = "WPF UI - wpfChat";
+        private string _applicationTitle = "ChatBot";
 
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()
         {
             new NavigationViewItem()
             {
-                Content = "Model",
+                Content = "模型",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.FolderAdd24 },
                 TargetPageType = typeof(Views.Pages.HomePage)
             },
@@ -25,7 +25,7 @@ namespace wpfChat.ViewModels.Windows
             //},
             new NavigationViewItem()
             {
-                Content = "Chart",
+                Content = "对话",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Chat32 },
                 TargetPageType = typeof(Views.Pages.ChatPage)
             }
@@ -36,7 +36,7 @@ namespace wpfChat.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "SET",
+                Content = "设置",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(Views.Pages.SettingsPage)
             }

@@ -34,7 +34,18 @@ namespace wpfChat.Views.Pages
                     _displayText = _displayText.Substring(0, endIndex >= 0 ? endIndex : 0).TrimEnd();
                     UpdateLastestLine($"智能体：{_displayText}");
                 });
-            };            
+            };
+            viewModel.clearRichTextBoxEvent += (sender, e) =>
+            {
+                // 清空RichTextBox内容
+                Dispatcher.Invoke(() =>
+                {
+                    DisplayTextBox.Document.Blocks.Clear();
+                    _rawBuffer = "";
+                    _displayText = "";
+                    AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
+                });                
+            };
             AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
         }
 

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
+using wpfChat.Models;
+using wpfChat.Services;
 
 namespace wpfChat.LLM
 {
@@ -18,9 +20,12 @@ namespace wpfChat.LLM
         private InferenceParams _inferenceParams;
         public EventHandler<string> updateResult;
         public EventHandler<bool> isModelLoaded;
+        private string _currentModelPath;
+        //private NotificationService _notificationService;
 
         public LLMService(string modelPath)
         {
+            //_notificationService = new NotificationService();
             if (!string.IsNullOrEmpty(modelPath) && File.Exists(modelPath))
             {
                 Task.Run(() =>
@@ -28,9 +33,30 @@ namespace wpfChat.LLM
                     InitializingModel(modelPath);
                 });
             }
-            else { 
-                Debug.WriteLine("模型路径为空，无法加载模型。请检查配置。");
+            else {
+                NotificationService.sendToast("模型加载失败", "模型路径为空或文件不存在，请检查配置。");
+                //Debug.WriteLine("模型路径为空，无法加载模型。请检查配置。");
             }                  
+        }
+
+        // 添加公共方法用于动态切换模型
+        public async Task ChangeModelAsync(string newModelPath)
+        {
+            if (string.IsNullOrEmpty(newModelPath) || !File.Exists(newModelPath))
+            {
+                NotificationService.sendToast("模型切换失败", "新模型路径无效或文件不存在，请检查配置。");
+                //Debug.WriteLine("新模型路径无效，无法加载。");
+                return;
+            }
+
+            // 释放现有资源
+            Dispose();
+
+            _currentModelPath = newModelPath;
+            AppConfig.ModelPath = newModelPath; // 更新全局配置
+
+            // 异步加载新模型
+            await Task.Run(() => InitializingModel(newModelPath));
         }
 
         private void InitializingModel(string modelPath) {
@@ -89,7 +115,8 @@ namespace wpfChat.LLM
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error generating response: {ex.Message}");
+                NotificationService.sendToast("抱歉，生成回复时出错", "Error generating response: " + ex.Message);
+                //Console.WriteLine($"Error generating response: {ex.Message}");
                 return "抱歉，生成回复时出错。";
             }
         }

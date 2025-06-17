@@ -29,6 +29,8 @@
             <ui:Button
                 x:Name="PickFolder"
                 FontSize="24"
+                Appearance="Primary"
+                Icon="FolderAdd24"
                 Command="{Binding ViewModel.PickFolderCommand, Mode=OneWay}"
                 Grid.Column="0"/>
             <TextBlock

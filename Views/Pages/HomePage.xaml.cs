@@ -29,7 +29,9 @@ namespace wpfChat.Views.Pages
             {
                 // 处理选中项
                 Debug.WriteLine($"选中模型: {selectedModel.Name}");
-
+                if (!selectedModel.Path.Equals(AppConfig.ModelPath)) {
+                    ViewModel.ChangeModel(AppConfig.ModelPath);
+                }
                 // 更新应用配置
                 AppConfig.ModelPath = selectedModel.Path;
 
@@ -39,6 +41,7 @@ namespace wpfChat.Views.Pages
                     ModelFolder = AppConfig.ModelFolder,
                     ModelPath = AppConfig.ModelPath
                 };
+                
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
                 {
                     if (task.IsFaulted)
