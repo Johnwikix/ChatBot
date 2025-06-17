@@ -32,7 +32,7 @@ namespace wpfChat.Views.Pages
                     const int userPrefixLength = 5;
                     int endIndex = _displayText.Length - userPrefixLength;
                     _displayText = _displayText.Substring(0, endIndex >= 0 ? endIndex : 0).TrimEnd();
-                    UpdateLastestLine($"智能体：{_displayText}");
+                    UpdateLastestLine($"智能体{_displayText}");
                 });
             };
             viewModel.clearRichTextBoxEvent += (sender, e) =>
@@ -52,7 +52,7 @@ namespace wpfChat.Views.Pages
         private void ProcessBuffer()
         {
             // 检查缓冲区中是否包含完整的Assistant:前缀
-            const string assistantPrefix = "Assistant:";           
+            const string assistantPrefix = "Assistant";           
             // 检查是否有完整的Assistant:前缀
             if (_rawBuffer.Contains(assistantPrefix))
             {
