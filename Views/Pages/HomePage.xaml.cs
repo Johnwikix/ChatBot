@@ -39,7 +39,9 @@ namespace wpfChat.Views.Pages
                 SaveConfig saveConfig = new SaveConfig
                 {
                     ModelFolder = AppConfig.ModelFolder,
-                    ModelPath = AppConfig.ModelPath
+                    ModelPath = AppConfig.ModelPath,
+                    ContextSize = AppConfig.ContextSize,
+                    TotalLayers = AppConfig.TotalLayers
                 };
                 
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>

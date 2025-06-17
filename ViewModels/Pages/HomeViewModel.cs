@@ -60,7 +60,9 @@ namespace wpfChat.ViewModels.Pages
                 SaveConfig saveConfig = new SaveConfig
                 {
                     ModelFolder = AppConfig.ModelFolder,
-                    ModelPath = AppConfig.ModelPath
+                    ModelPath = AppConfig.ModelPath,
+                    ContextSize = AppConfig.ContextSize,
+                    TotalLayers = AppConfig.TotalLayers
                 };
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
                 {
@@ -73,6 +75,7 @@ namespace wpfChat.ViewModels.Pages
                         Debug.WriteLine("配置已成功保存。");
                     }
                 });
+                ChangeModel(AppConfig.ModelPath);
             }
         }
 

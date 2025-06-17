@@ -13,5 +13,7 @@ namespace wpfChat.Models
         public int Id { get; set; }
         public string ModelFolder { get; set; } = "Models";
         public string ModelPath { get; set; }
+        public uint ContextSize { get; set; } = 2048;
+        public int TotalLayers { get; set; } = 45;
     }
 }
