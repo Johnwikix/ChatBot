@@ -74,14 +74,14 @@ namespace wpfChat.LLM
 
             // 初始化对话历史
             _chatHistory = new ChatHistory();
-            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。智能体乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
-            _chatHistory.AddMessage(AuthorRole.User, "你好智能体");
+            _chatHistory.AddMessage(AuthorRole.System, "用户与名为Assistant的助手交互的对话记录。Assistant乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
+            _chatHistory.AddMessage(AuthorRole.User, "你好Assistant");
             _chatHistory.AddMessage(AuthorRole.Assistant, "你好。今天我能帮你什么吗？");
 
             // 配置推理参数
             _inferenceParams = new InferenceParams()
             {
-                MaxTokens = 512,
+                MaxTokens = AppConfig.MaxTokens,
                 AntiPrompts = new List<string> { "User:" }
             };
             Debug.WriteLine("模型加载完成。");

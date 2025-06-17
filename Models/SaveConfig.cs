@@ -15,5 +15,6 @@ namespace wpfChat.Models
         public string ModelPath { get; set; }
         public uint ContextSize { get; set; } = 2048;
         public int TotalLayers { get; set; } = 45;
+        public int MaxTokens { get; set; } = 2048;
     }
 }

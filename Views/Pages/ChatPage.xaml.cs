@@ -52,15 +52,22 @@ namespace wpfChat.Views.Pages
         private void ProcessBuffer()
         {
             // 检查缓冲区中是否包含完整的Assistant:前缀
-            const string assistantPrefix = "Assistant";           
+            const string assistantPrefix = "Assistant";
+            const string systemPrefix = "System";
             // 检查是否有完整的Assistant:前缀
             if (_rawBuffer.Contains(assistantPrefix))
             {
                 int prefixIndex = _rawBuffer.IndexOf(assistantPrefix, StringComparison.OrdinalIgnoreCase);
-                string contentAfterPrefix = _rawBuffer.Substring(prefixIndex + assistantPrefix.Length).TrimStart();                
+                string contentAfterPrefix = _rawBuffer.Substring(prefixIndex + assistantPrefix.Length).TrimStart();
                 _displayText = contentAfterPrefix;
                 _rawBuffer = "";
-            }
+            } else if (_rawBuffer.Contains(systemPrefix)) {
+                // 检查是否有完整的System:前缀
+                int prefixIndex = _rawBuffer.IndexOf(systemPrefix, StringComparison.OrdinalIgnoreCase);
+                string contentAfterPrefix = _rawBuffer.Substring(prefixIndex + systemPrefix.Length).TrimStart();
+                _displayText = contentAfterPrefix;
+                _rawBuffer = "";
+            }            
         }
 
 
