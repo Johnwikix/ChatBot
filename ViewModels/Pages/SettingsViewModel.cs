@@ -1,5 +1,6 @@
 ﻿using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
+using wpfChat.Models;
 
 namespace wpfChat.ViewModels.Pages
 {
@@ -12,7 +13,12 @@ namespace wpfChat.ViewModels.Pages
 
         [ObservableProperty]
         private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
-
+        [ObservableProperty]
+        private uint _contextSize = AppConfig.ContextSize;
+        [ObservableProperty]
+        private int _maxTokens = AppConfig.MaxTokens;
+        [ObservableProperty]
+        private int _totalLayers = AppConfig.TotalLayers;
         public Task OnNavigatedToAsync()
         {
             if (!_isInitialized)
@@ -60,6 +66,19 @@ namespace wpfChat.ViewModels.Pages
 
                     break;
             }
+        }
+
+        public void ContextSizeChanged(uint value)
+        {
+            AppConfig.ContextSize = value;
+        }
+        public void MaxTokensChanged(int value)
+        {
+            AppConfig.MaxTokens = value;
+        }
+        public void TotalLayersChanged(int value)
+        {
+            AppConfig.TotalLayers = value;
         }
     }
 }

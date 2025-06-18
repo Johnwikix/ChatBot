@@ -2,6 +2,7 @@
 using System.Windows.Documents;
 using System.Windows.Media;
 using Wpf.Ui.Abstractions.Controls;
+using Wpf.Ui.Controls;
 using wpfChat.ViewModels.Pages;
 using static LLama.Common.ChatHistory;
 
@@ -18,14 +19,13 @@ namespace wpfChat.Views.Pages
             ViewModel = viewModel;
             DataContext = this;
             InitializeComponent();
+            InitializeStyle();
             viewModel.updateResultEvent += (sender, result) =>
             {
                 // 将新文本添加到缓冲区
-                _rawBuffer = result;
-
+                _displayText = result;
                 // 处理缓冲区，过滤前缀
-                ProcessBuffer();
-
+                //ProcessBuffer();
                 // 使用Dispatcher确保在UI线程执行
                 Dispatcher.Invoke(() =>
                 {
@@ -47,6 +47,12 @@ namespace wpfChat.Views.Pages
                 });                
             };
             AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
+        }
+
+        private void InitializeStyle()
+        {
+            Attachment.Icon = new SymbolIcon { Symbol = SymbolRegular.Attach24 };
+            ReloadModel.Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowReset24 };
         }
 
         private void ProcessBuffer()

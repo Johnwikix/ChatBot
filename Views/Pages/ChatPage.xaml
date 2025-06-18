@@ -24,39 +24,43 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="150" />
         </Grid.RowDefinitions>
-        <TextBlock
-            x:Name="TitleModelPath"
-            Margin="0"
-            Grid.Row="0"
-            Text="{Binding ViewModel.ModelPath, Mode=OneWay}" />
+        <StackPanel Orientation="Horizontal">
+            <ui:Button
+                x:Name="ReloadModel"
+                Margin="0,0,10,0"
+                Command="{Binding ViewModel.ReloadModelCommand , Mode=OneWay}"
+                Content="{Binding ViewModel.ReloadBtn , Mode=OneWay}"
+                Appearance="Secondary" />
+            <TextBlock
+                x:Name="TitleModelPath"
+                Margin="0"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                Text="{Binding ViewModel.ModelPath, Mode=OneWay}" />
+        </StackPanel>        
         <RichTextBox x:Name="DisplayTextBox" Margin="0,10,0,10" Grid.Row="1" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="SendTextBox" Margin="0,10,0,10" Grid.Column="0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
-            <ui:Button x:Name="SendBtn" IsEnabled="{Binding ViewModel.IsModelReady, Mode=OneWay}" Margin="10,10,0,10" Width="130" Click="SendBtn_Click" Content="{Binding ViewModel.ButtonText, Mode=OneWay}" Grid.Column="1" Appearance="Primary" VerticalAlignment="Stretch"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ui:Button 
+                    x:Name="Attachment" 
+                    Margin="10,10,0,10"
+                    Grid.Row="2"
+                    Command="{Binding ViewModel.PickAttachCommand , Mode=OneWay}"
+                    ToolTipService.ToolTip="pdf,docx,txt,md"
+                    Appearance="Secondary" />
+            </Grid>
+            <ui:Button x:Name="SendBtn" IsEnabled="{Binding ViewModel.IsModelReady, Mode=OneWay}" Margin="10,10,0,10" Width="130" Click="SendBtn_Click" Content="{Binding ViewModel.ButtonText, Mode=OneWay}" Grid.Column="2" Appearance="Primary" VerticalAlignment="Stretch"/>
         </Grid>
-        <!--<ui:VirtualizingItemsControl
-            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-            ItemsSource="{Binding ViewModel.Colors, Mode=OneWay}"
-            VirtualizingPanel.CacheLengthUnit="Item">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:DataColor}">
-                    <ui:Button
-                        Width="80"
-                        Height="80"
-                        Margin="2"
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Appearance="Secondary"
-                        Background="{Binding Color, Mode=OneWay}"
-                        FontSize="25"
-                        Icon="Fluent24" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ui:VirtualizingItemsControl>-->
     </Grid>
 </Page>

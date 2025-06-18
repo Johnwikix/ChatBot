@@ -62,7 +62,8 @@ namespace wpfChat.ViewModels.Pages
                     ModelFolder = AppConfig.ModelFolder,
                     ModelPath = AppConfig.ModelPath,
                     ContextSize = AppConfig.ContextSize,
-                    TotalLayers = AppConfig.TotalLayers
+                    TotalLayers = AppConfig.TotalLayers,
+                    MaxTokens = AppConfig.MaxTokens
                 };
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
                 {
@@ -85,12 +86,10 @@ namespace wpfChat.ViewModels.Pages
                 if (task.IsFaulted)
                 {
                     NotificationService.sendToast("模型切换失败", "无法切换到选定的模型，请检查模型文件是否存在或格式是否正确。");
-                    //Debug.WriteLine($"切换模型时出错: {task.Exception?.Message}");
                 }
                 else
                 {
                     NotificationService.sendToast("模型切换成功", $"已成功切换到{modelPath}");
-                    //Debug.WriteLine("模型已成功切换。");
                 }
             });
         }

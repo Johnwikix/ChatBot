@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using wpfChat.Models;
 using wpfChat.Services;
+using LLama.Sampling;
 
 namespace wpfChat.LLM
 {
@@ -74,15 +75,18 @@ namespace wpfChat.LLM
 
             // 初始化对话历史
             _chatHistory = new ChatHistory();
-            _chatHistory.AddMessage(AuthorRole.System, "用户与名为Assistant的助手交互的对话记录。Assistant乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
-            _chatHistory.AddMessage(AuthorRole.User, "你好Assistant");
-            _chatHistory.AddMessage(AuthorRole.Assistant, "你好。今天我能帮你什么吗？");
+            _chatHistory.AddMessage(AuthorRole.System, "你是一个乐于助人的助手，需要准确回答用户的请求。");
 
             // 配置推理参数
             _inferenceParams = new InferenceParams()
             {
                 MaxTokens = AppConfig.MaxTokens,
-                AntiPrompts = new List<string> { "User:" }
+                AntiPrompts = new List<string> { "User:" },
+                SamplingPipeline = new DefaultSamplingPipeline{
+                    Temperature = 0.85f,         // 控制随机性（0-1）
+                    PreventEOS = false,         // 不阻止模型生成结束符
+                    MinKeep = 1                 // 至少保留1个候选token
+                }
             };
             Debug.WriteLine("模型加载完成。");
             isModelLoaded?.Invoke(this, true); // 模型加载完成事件

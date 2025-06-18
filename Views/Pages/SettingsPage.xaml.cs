@@ -14,5 +14,20 @@ namespace wpfChat.Views.Pages
 
             InitializeComponent();
         }
+
+        private void TotalLayersBox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            ViewModel.TotalLayersChanged((int)args.NewValue);
+        }
+
+        private void ContextSizeBox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            ViewModel.ContextSizeChanged((uint)args.NewValue);
+        }
+
+        private void MaxTokensBox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            ViewModel.MaxTokensChanged((int)args.NewValue);
+        }
     }
 }

@@ -20,32 +20,101 @@
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <TextBlock
+            Grid.Row="0"
             FontSize="20"
             FontWeight="Medium"
             Text="个性化" />
-        <TextBlock Margin="0,12,0,0" Text="主题" />
-        <RadioButton
-            Margin="0,12,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_light"
-            Content="浅色"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
-        <RadioButton
-            Margin="0,8,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_dark"
-            Content="深色"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
-
-        <!--<TextBlock
-            Margin="0,24,0,0"
+        <Expander Grid.Row="1" Margin="0,10,0,10">
+            <Expander.Header>
+                <TextBlock Text="主题" />
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <RadioButton
+                        Margin="0,12,0,0"
+                        Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+                        CommandParameter="theme_light"
+                        Content="浅色"
+                        GroupName="themeSelect"
+                        IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+                    <RadioButton
+                        Margin="0,8,0,0"
+                        Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+                        CommandParameter="theme_dark"
+                        Content="深色"
+                        GroupName="themeSelect"
+                        IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
+        <TextBlock
+            Grid.Row="2"
             FontSize="20"
             FontWeight="Medium"
-            Text="About wpfChat" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />-->
-    </StackPanel>
+            Text="模型" />
+        <Expander Grid.Row="3" Margin="0,10,0,10">
+            <Expander.Header>
+                <TextBlock Text="模型载入参数" />
+            </Expander.Header>
+            <Expander.Content>
+                <Grid HorizontalAlignment="Stretch" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Total Gpu Layers" FontSize="14"  Grid.Column="0" Grid.Row="0" Margin="10" VerticalAlignment="Center"/>
+                    <ui:NumberBox 
+                        x:Name="TotalLayersBox" 
+                        Value="{Binding ViewModel.TotalLayers, Mode=TwoWay}" 
+                        ValueChanged="TotalLayersBox_ValueChanged" 
+                        Grid.Column="1" 
+                        Grid.Row="0" 
+                        Margin="10" 
+                        Width="200" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Right"/>
+
+                    <TextBlock Text="Context Size" FontSize="14"  Grid.Column="0" Grid.Row="1" Margin="10" VerticalAlignment="Center"/>
+                    <ui:NumberBox 
+                        x:Name="ContextSizeBox" 
+                        Value="{Binding ViewModel.ContextSize, Mode=TwoWay}"  
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        Margin="10"
+                        Width="200" 
+                        VerticalAlignment="Center" 
+                        ValueChanged="ContextSizeBox_ValueChanged"
+                        HorizontalAlignment="Right"/>
+
+                    <TextBlock Text="Max Tokens" FontSize="14"  Grid.Column="0" Grid.Row="2" Margin="10" VerticalAlignment="Center"/>
+                    <ui:NumberBox 
+                        x:Name="MaxTokensBox" 
+                        Value="{Binding ViewModel.MaxTokens, Mode=TwoWay}"  
+                        Grid.Column="1" 
+                        Grid.Row="2" 
+                        Margin="10" 
+                        Width="200" 
+                        ValueChanged="MaxTokensBox_ValueChanged"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Right"/>
+
+                </Grid>
+            </Expander.Content>
+        </Expander>
+    </Grid>
+    
 </Page>

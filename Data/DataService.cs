@@ -30,6 +30,9 @@ namespace wpfChat.Data
             if (config != null) {
                 AppConfig.ModelFolder = config.ModelFolder;    
                 AppConfig.ModelPath = config.ModelPath;
+                AppConfig.ContextSize = config.ContextSize;
+                AppConfig.TotalLayers = config.TotalLayers;
+                AppConfig.MaxTokens = config.MaxTokens;
             }            
         }
 
