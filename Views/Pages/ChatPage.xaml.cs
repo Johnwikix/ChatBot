@@ -29,10 +29,10 @@ namespace wpfChat.Views.Pages
                 // 使用Dispatcher确保在UI线程执行
                 Dispatcher.Invoke(() =>
                 {
-                    const int userPrefixLength = 5;
+                    const int userPrefixLength = 0;
                     int endIndex = _displayText.Length - userPrefixLength;
                     _displayText = _displayText.Substring(0, endIndex >= 0 ? endIndex : 0).TrimEnd();
-                    UpdateLastestLine($"智能体{_displayText}");
+                    UpdateLastestLine($"智能体:{_displayText}");
                 });
             };
             viewModel.clearRichTextBoxEvent += (sender, e) =>
@@ -51,8 +51,10 @@ namespace wpfChat.Views.Pages
 
         private void InitializeStyle()
         {
-            Attachment.Icon = new SymbolIcon { Symbol = SymbolRegular.Attach24 };
+            AttachmentButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Attach24 };
             ReloadModel.Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowReset24 };
+            LinkButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Link24 };
+            ImgButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Image24 };
         }
 
         private void ProcessBuffer()

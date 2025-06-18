@@ -2,7 +2,8 @@
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Documents;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing; // 关键命名空间
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.IO; // 关键命名空间
 
 namespace wpfChat.Services
 {
@@ -18,13 +19,13 @@ namespace wpfChat.Services
                 switch (fileExtension)
                 {
                     case ".pdf":
-                        return $"PDF文件：{fileName}";
+                        return ReadPdfContent(filePath);
                     case ".docx":
                         return ReadDocxContent(filePath);
                     case ".txt":
-                        return $"文本文件：{fileName}";
+                        return ReadTxtContent(filePath);
                     case ".md":
-                        return $"Markdown文件：{fileName}";
+                        return ReadMarkdownContent(filePath);
                     default:
                         return $"未知文件类型：{fileName}";
                 }
@@ -65,6 +66,74 @@ namespace wpfChat.Services
             }
 
             return contentBuilder.ToString();
+        }
+
+        private static string ReadPdfContent(string filePath)
+        {
+            StringBuilder contentBuilder = new StringBuilder();
+
+            try
+            {
+                // 这里使用iTextSharp库来读取PDF内容
+                // 注意：需要安装iTextSharp包 (Install-Package iTextSharp)
+                using (var reader = new iTextSharp.text.pdf.PdfReader(filePath))
+                {
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        // 提取页面文本
+                        string pageText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(
+                            reader, i, new iTextSharp.text.pdf.parser.SimpleTextExtractionStrategy());
+
+                        // 转换编码以正确处理中文等字符
+                        pageText = Encoding.UTF8.GetString(
+                            Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(pageText)));
+
+                        contentBuilder.AppendLine($"第 {i} 页:");
+                        contentBuilder.AppendLine(pageText);
+                    }
+                }
+
+                return contentBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                // 如果读取失败，返回错误信息
+                return $"无法读取PDF内容: {ex.Message}";
+            }
+        }
+
+        private static string ReadTxtContent(string filePath)
+        {
+            try
+            {
+                // 尝试自动检测文件编码并读取文本
+                using (var reader = new StreamReader(filePath, detectEncodingFromByteOrderMarks: true))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                // 如果读取失败，返回错误信息
+                return $"无法读取文本文件内容: {ex.Message}";
+            }
+        }
+
+        private static string ReadMarkdownContent(string filePath)
+        {
+            try
+            {
+                // 与TXT文件类似，使用StreamReader读取MD文件
+                using (var reader = new StreamReader(filePath, detectEncodingFromByteOrderMarks: true))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                // 如果读取失败，返回错误信息
+                return $"无法读取Markdown文件内容: {ex.Message}";
+            }
         }
     }
     

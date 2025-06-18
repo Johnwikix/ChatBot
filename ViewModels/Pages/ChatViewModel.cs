@@ -128,7 +128,7 @@ namespace wpfChat.ViewModels.Pages
                     // 显示成功消息
                     _attachMessage = AttachService.GetAttach(filePath);
                     _isDocAttach = true;
-                    //Debug.WriteLine($"选中的文件内容: {_attachMessage}");
+                    Debug.WriteLine($"选中的文件内容: {_attachMessage}");
                 }
                 catch (Exception ex)
                 {
