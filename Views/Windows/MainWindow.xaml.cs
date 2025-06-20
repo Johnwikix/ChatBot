@@ -34,7 +34,9 @@ namespace wpfChat.Views.Windows
                     ModelPath = AppConfig.ModelPath,
                     ContextSize = AppConfig.ContextSize,
                     TotalLayers = AppConfig.TotalLayers,
-                    MaxTokens = AppConfig.MaxTokens
+                    MaxTokens = AppConfig.MaxTokens,
+                    InitialPrompt = AppConfig.InitialPrompt,
+                    EndPrompt = AppConfig.EndPrompt
                 };
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
                 {

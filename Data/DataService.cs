@@ -33,6 +33,8 @@ namespace wpfChat.Data
                 AppConfig.ContextSize = config.ContextSize;
                 AppConfig.TotalLayers = config.TotalLayers;
                 AppConfig.MaxTokens = config.MaxTokens;
+                AppConfig.InitialPrompt = config.InitialPrompt;
+                AppConfig.EndPrompt = config.EndPrompt;
             }            
         }
 
@@ -57,6 +59,22 @@ namespace wpfChat.Data
             {
                 await _dbConnection.InsertAsync(config);
             }
+        }
+
+        public static async Task SaveAllAppConfigAsync()
+        {
+            var config = new SaveConfig
+            {
+                ModelFolder = AppConfig.ModelFolder,
+                ModelPath = AppConfig.ModelPath,
+                ContextSize = AppConfig.ContextSize,
+                TotalLayers = AppConfig.TotalLayers,
+                MaxTokens = AppConfig.MaxTokens,
+                InitialPrompt = AppConfig.InitialPrompt,
+                EndPrompt = AppConfig.EndPrompt
+            };
+            await SaveAppConfigAsync(config);
+            Debug.WriteLine("应用配置已保存。");
         }
     }
 }

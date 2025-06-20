@@ -16,5 +16,7 @@ namespace wpfChat.Models
         public uint ContextSize { get; set; } = 2048;
         public int TotalLayers { get; set; } = 45;
         public int MaxTokens { get; set; } = 2048;
+        public string InitialPrompt { get; set; } = "你是一个乐于助人的助手，需要准确回答用户的请求";
+        public string EndPrompt { get; set; } = "有其他问题请告诉我"; // 结束提示
     }
 }

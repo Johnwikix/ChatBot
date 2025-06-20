@@ -29,5 +29,15 @@ namespace wpfChat.Views.Pages
         {
             ViewModel.MaxTokensChanged((int)args.NewValue);
         }
+
+        private void InitalPromptBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            ViewModel.InitalPromptChanged(InitalPromptBox.Text);
+        }
+
+        private void InitalPromptEndBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            ViewModel.EndPromptChanged(InitalPromptEndBox.Text);
+        }
     }
 }

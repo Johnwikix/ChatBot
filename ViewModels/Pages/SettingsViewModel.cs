@@ -1,5 +1,6 @@
 ﻿using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
+using wpfChat.Data;
 using wpfChat.Models;
 
 namespace wpfChat.ViewModels.Pages
@@ -19,6 +20,11 @@ namespace wpfChat.ViewModels.Pages
         private int _maxTokens = AppConfig.MaxTokens;
         [ObservableProperty]
         private int _totalLayers = AppConfig.TotalLayers;
+        [ObservableProperty]
+        private string _initalPrompt = AppConfig.InitialPrompt;
+        [ObservableProperty]
+        private string _endPrompt = AppConfig.EndPrompt;
+
         public Task OnNavigatedToAsync()
         {
             if (!_isInitialized)
@@ -33,7 +39,6 @@ namespace wpfChat.ViewModels.Pages
         {
             CurrentTheme = ApplicationThemeManager.GetAppTheme();
             AppVersion = $"UiDesktopApp1 - {GetAssemblyVersion()}";
-
             _isInitialized = true;
         }
 
@@ -79,6 +84,14 @@ namespace wpfChat.ViewModels.Pages
         public void TotalLayersChanged(int value)
         {
             AppConfig.TotalLayers = value;
+        }
+        public void InitalPromptChanged(string value)
+        {
+            AppConfig.InitialPrompt = value;
+        }
+        public void EndPromptChanged(string value)
+        {
+            AppConfig.EndPrompt = value;
         }
     }
 }

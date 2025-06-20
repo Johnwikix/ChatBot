@@ -3,6 +3,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
+using wpfChat.Models;
 using wpfChat.ViewModels.Pages;
 using static LLama.Common.ChatHistory;
 
@@ -29,10 +30,32 @@ namespace wpfChat.Views.Pages
                 // 使用Dispatcher确保在UI线程执行
                 Dispatcher.Invoke(() =>
                 {
-                    const int userPrefixLength = 0;
-                    int endIndex = _displayText.Length - userPrefixLength;
-                    _displayText = _displayText.Substring(0, endIndex >= 0 ? endIndex : 0).TrimEnd();
-                    UpdateLastestLine($"智能体:{_displayText}");
+                    const int userPrefixLength = 5;
+                    string userPrefix = "User:";
+                    string displayText;
+                    // 确保有足够的字符进行检查
+                    if (_displayText.Length >= userPrefixLength)
+                    {
+                        string lastChars = _displayText.Substring(_displayText.Length - userPrefixLength);
+
+                        if (lastChars == userPrefix)
+                        {
+                            // 最后5个字符是"User:"，移除并修剪
+                            int endIndex = _displayText.Length - userPrefixLength;
+                            displayText = _displayText.Substring(0, endIndex).TrimEnd();
+                        }
+                        else
+                        {
+                            // 最后5个字符不是"User:"，保留原始文本
+                            displayText = _displayText;
+                        }
+                    }
+                    else
+                    {
+                        // 文本长度不足5个字符，直接使用原始文本
+                        displayText = _displayText;
+                    }
+                    UpdateLastestLine(displayText);
                 });
             };
             viewModel.clearRichTextBoxEvent += (sender, e) =>
@@ -43,10 +66,10 @@ namespace wpfChat.Views.Pages
                     DisplayTextBox.Document.Blocks.Clear();
                     _rawBuffer = "";
                     _displayText = "";
-                    AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
+                    AddRichTextBoxLine(AppConfig.InitialPrompt, true);
                 });                
             };
-            AddRichTextBoxLine("智能体：你好，今天我能帮你什么吗？", true);
+            AddRichTextBoxLine(AppConfig.InitialPrompt, true);
         }
 
         private void InitializeStyle()
