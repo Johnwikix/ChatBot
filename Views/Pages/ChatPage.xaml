@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:wpfChat.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:wpfChat.Models"
+    xmlns:userControls="clr-namespace:wpfChat.CustomUserControl"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="ChatPage"
     d:DataContext="{d:DesignInstance local:ChatPage,
@@ -37,8 +38,11 @@
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 Text="{Binding ViewModel.ModelPath, Mode=OneWay}" />
-        </StackPanel>        
-        <RichTextBox x:Name="DisplayTextBox" Margin="0,10,0,10" Grid.Row="1" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
+        </StackPanel>
+        <userControls:ChatBubbleControl x:Name="ChatDisplay" 
+                                 Grid.Row="1"
+                                 Margin="0,10,0,10"/>
+        <!--<RichTextBox x:Name="DisplayTextBox" Margin="0,10,0,10" Grid.Row="1" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />-->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

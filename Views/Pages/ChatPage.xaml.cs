@@ -3,6 +3,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
+using wpfChat.CustomUserControl;
 using wpfChat.Models;
 using wpfChat.ViewModels.Pages;
 using static LLama.Common.ChatHistory;
@@ -55,21 +56,14 @@ namespace wpfChat.Views.Pages
                         // 文本长度不足5个字符，直接使用原始文本
                         displayText = _displayText;
                     }
-                    UpdateLastestLine(displayText);
+                    ChatDisplay.UpdateLastMessage(displayText, DateTime.Now);
                 });
             };
             viewModel.clearRichTextBoxEvent += (sender, e) =>
             {
-                // 清空RichTextBox内容
-                Dispatcher.Invoke(() =>
-                {
-                    DisplayTextBox.Document.Blocks.Clear();
-                    _rawBuffer = "";
-                    _displayText = "";
-                    AddRichTextBoxLine(AppConfig.InitialPrompt, true);
-                });                
+                ChatDisplay.ClearMessages();
             };
-            AddRichTextBoxLine(AppConfig.InitialPrompt, true);
+            ChatDisplay.AddMessage(AppConfig.InitialPrompt, true, DateTime.Now);
         }
 
         private void InitializeStyle()
@@ -102,49 +96,49 @@ namespace wpfChat.Views.Pages
         }
 
 
-        private void UpdateLastestLine(string text) {
+        //private void UpdateLastestLine(string text) {
 
-            int lineIndex = DisplayTextBox.Document.Blocks.Count - 1; // 获取最后一行的索引
-            // 获取指定索引的段落
-            Paragraph? paragraph = DisplayTextBox.Document.Blocks.ElementAt(lineIndex) as Paragraph;
-            if (paragraph == null) return;
-            // 清空段落现有内容
-            paragraph.Inlines.Clear();
-            // 添加新的Run元素
-            Run newRun = new Run(text);
-            paragraph.Inlines.Add(newRun);
-            DisplayTextBox.ScrollToEnd();
-        }
+        //    int lineIndex = DisplayTextBox.Document.Blocks.Count - 1; // 获取最后一行的索引
+        //    // 获取指定索引的段落
+        //    Paragraph? paragraph = DisplayTextBox.Document.Blocks.ElementAt(lineIndex) as Paragraph;
+        //    if (paragraph == null) return;
+        //    // 清空段落现有内容
+        //    paragraph.Inlines.Clear();
+        //    // 添加新的Run元素
+        //    Run newRun = new Run(text);
+        //    paragraph.Inlines.Add(newRun);
+        //    DisplayTextBox.ScrollToEnd();
+        //}
 
-        private void AddRichTextBoxLine(string text,bool isInital = false) {
-            TextPointer endPosition = DisplayTextBox.Document.ContentEnd;            
-            if (DisplayTextBox.Document.Blocks.Count == 1 && isInital) {
-                // 如果是第一次初始化，清空现有内容
-                DisplayTextBox.Document.Blocks.Clear();
-            }
-            Paragraph newParagraph = new Paragraph();
-            // 添加文本内容（可设置字体、颜色等样式）
-            Run run = new Run(text);
-            newParagraph.Inlines.Add(run);
+        //private void AddRichTextBoxLine(string text,bool isInital = false) {
+        //    TextPointer endPosition = DisplayTextBox.Document.ContentEnd;            
+        //    if (DisplayTextBox.Document.Blocks.Count == 1 && isInital) {
+        //        // 如果是第一次初始化，清空现有内容
+        //        DisplayTextBox.Document.Blocks.Clear();
+        //    }
+        //    Paragraph newParagraph = new Paragraph();
+        //    // 添加文本内容（可设置字体、颜色等样式）
+        //    Run run = new Run(text);
+        //    newParagraph.Inlines.Add(run);
 
-            // 在结尾处插入新段落
-            DisplayTextBox.Document.Blocks.Add(newParagraph);
+        //    // 在结尾处插入新段落
+        //    DisplayTextBox.Document.Blocks.Add(newParagraph);
 
-            // 可选：将光标移到新行末尾
-            DisplayTextBox.CaretPosition = DisplayTextBox.Document.ContentEnd;
-            DisplayTextBox.ScrollToEnd();
-        }
+        //    // 可选：将光标移到新行末尾
+        //    DisplayTextBox.CaretPosition = DisplayTextBox.Document.ContentEnd;
+        //    DisplayTextBox.ScrollToEnd();
+        //}
 
         private async void SendBtn_Click(object sender, RoutedEventArgs e)
         {
-            string message =$"用户：{SendTextBox.Text.Trim()}";
+            string message =SendTextBox.Text.Trim();
             string result = string.Empty;
             _displayText = string.Empty;
             _rawBuffer = string.Empty;
             if (!string.IsNullOrEmpty(message))
             {
-                AddRichTextBoxLine(message);
-                AddRichTextBoxLine("");
+                ChatDisplay.AddMessage(message, true, DateTime.Now);
+                ChatDisplay.AddMessage("", false, DateTime.Now);
                 SendTextBox.Clear();
                 result = await ViewModel.SendMessage(message);                
             }
