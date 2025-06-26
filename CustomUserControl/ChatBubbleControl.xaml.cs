@@ -43,13 +43,12 @@ namespace wpfChat.CustomUserControl
                 Content = content,
                 IsFromMe = isFromMe,
                 Timestamp = timestamp ?? DateTime.Now
-            };
-
-            Messages.Add(message);
+            };            
 
             // 自动滚动到底部
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                Messages.Add(message);
                 ChatScrollViewer.ScrollToEnd();
             }));
         }
@@ -77,7 +76,10 @@ namespace wpfChat.CustomUserControl
 
         public void ClearMessages()
         {
-            Messages.Clear();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Messages.Clear();
+            }));
         }
 
         public void ScrollToBottom()

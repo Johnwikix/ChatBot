@@ -62,6 +62,7 @@ namespace wpfChat.Views.Pages
             viewModel.clearRichTextBoxEvent += (sender, e) =>
             {
                 ChatDisplay.ClearMessages();
+                ChatDisplay.AddMessage(AppConfig.InitialPrompt, true, DateTime.Now);
             };
             ChatDisplay.AddMessage(AppConfig.InitialPrompt, true, DateTime.Now);
         }
