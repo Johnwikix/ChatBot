@@ -13,7 +13,7 @@
         <Style x:Key="MessageBubbleStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="15,15,15,3"/>
             <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="MaxWidth" Value="800"/>
+            <Setter Property="MaxWidth" Value="3840"/>
             <Setter Property="Margin" Value="5,3"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsFromMe}" Value="True">
@@ -30,10 +30,17 @@
         </Style>
 
         <!-- 消息文本样式 -->
-        <Style x:Key="MessageTextStyle" TargetType="TextBlock">
+        <Style x:Key="MessageTextStyle" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="LineHeight" Value="20"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="IBeam"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsFromMe}" Value="True">
                     <Setter Property="Foreground" Value="White"/>
@@ -55,13 +62,10 @@
         <!-- 聊天消息数据模板 -->
         <DataTemplate x:Key="MessageTemplate">
             <StackPanel Margin="10,2">
-                <!-- 消息气泡 -->
                 <Border Style="{StaticResource MessageBubbleStyle}">
-                    <TextBlock Text="{Binding Content}" 
-                               Style="{StaticResource MessageTextStyle}"/>
+                    <TextBox Text="{Binding Content, Mode=OneWay}" 
+                             Style="{StaticResource MessageTextStyle}"/>
                 </Border>
-
-                <!-- 时间戳 -->
                 <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm}" 
                            Style="{StaticResource TimestampStyle}"
                            HorizontalAlignment="{Binding IsFromMe, Converter={StaticResource BoolToAlignmentConverter}}"/>

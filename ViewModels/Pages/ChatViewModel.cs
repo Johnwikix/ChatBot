@@ -8,6 +8,9 @@ using wpfChat.LLM;
 using System.IO;
 using Microsoft.Win32;
 using wpfChat.Services;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace wpfChat.ViewModels.Pages
 {
@@ -52,38 +55,10 @@ namespace wpfChat.ViewModels.Pages
 
         public Task OnNavigatedToAsync()
         {
-            //if (!_isInitialized)
-            //    InitializeViewModel();
-
             return Task.CompletedTask;
         }
 
         public Task OnNavigatedFromAsync() => Task.CompletedTask;
-
-        //private void InitializeViewModel()
-        //{
-        //    var random = new Random();
-        //    var colorCollection = new List<DataColor>();
-
-        //    for (int i = 0; i < 8192; i++)
-        //        colorCollection.Add(
-        //            new DataColor
-        //            {
-        //                Color = new SolidColorBrush(
-        //                    Color.FromArgb(
-        //                        (byte)200,
-        //                        (byte)random.Next(0, 250),
-        //                        (byte)random.Next(0, 250),
-        //                        (byte)random.Next(0, 250)
-        //                    )
-        //                )
-        //            }
-        //        );
-
-        //    Colors = colorCollection;
-
-        //    _isInitialized = true;
-        //}
 
         public async Task<string> SendMessage(string message)
         {
@@ -100,42 +75,52 @@ namespace wpfChat.ViewModels.Pages
         private async void OnReloadModel() {
             await _llmService.ChangeModelAsync(AppConfig.ModelPath);
         }
-        [RelayCommand]
-        private void OnPickAttach() {
-            // 创建文件打开对话框
+        public string OnPickAttach() {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            // 设置筛选器，允许多种文件类型
             openFileDialog.Filter = "文档 (*.pdf;*.docx;*.txt;*.md)|*.pdf;*.docx;*.txt;*.md";
-
-            // 允许多选
             openFileDialog.Multiselect = false;
-
-            // 设置对话框标题
             openFileDialog.Title = "选择文件";
-
-            // 显示对话框并获取用户操作结果
             bool? result = openFileDialog.ShowDialog();
-
-            // 处理用户选择
-            // 处理用户选择
+            string filePath = string.Empty;
             if (result == true)
             {
                 try
                 {
-                    // 获取选中的文件路径
-                    string filePath = openFileDialog.FileName;
-                    // 显示成功消息
+                    filePath = openFileDialog.FileName;
                     _attachMessage = AttachService.GetAttach(filePath);
                     _isDocAttach = true;
                     Debug.WriteLine($"选中的文件内容: {_attachMessage}");
                 }
                 catch (Exception ex)
                 {
-                    // 显示错误消息
                     NotificationService.sendToast("错误", $"选择文件时发生错误: {ex.Message}");
                 }
             }
+            return filePath;
         }
+
+        public void OpenFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = filePath,
+                        UseShellExecute = true
+                    });
+                }
+                else
+                {
+                    NotificationService.sendToast("错误", $"文件不存在: {filePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                NotificationService.sendToast("错误", $"无法打开文件: {ex.Message}");
+            }
+        }
+
     }
 }

@@ -1,10 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 using wpfChat.CustomUserControl;
 using wpfChat.Models;
+using wpfChat.Services;
 using wpfChat.ViewModels.Pages;
 using static LLama.Common.ChatHistory;
 
@@ -131,7 +136,15 @@ namespace wpfChat.Views.Pages
 
         private async void SendBtn_Click(object sender, RoutedEventArgs e)
         {
-            string message =SendTextBox.Text.Trim();
+            TextRange textRange = new TextRange(
+                SendTextBox.Document.ContentStart,
+                SendTextBox.Document.ContentEnd);
+            string message = textRange.Text;
+            // 移除末尾的换行符（处理 \r\n 或 \n）
+            if (message.EndsWith("\r\n"))
+                message = message.Substring(0, message.Length - 2);
+            else if (message.EndsWith("\n"))
+                message = message.Substring(0, message.Length - 1);
             string result = string.Empty;
             _displayText = string.Empty;
             _rawBuffer = string.Empty;
@@ -139,9 +152,64 @@ namespace wpfChat.Views.Pages
             {
                 ChatDisplay.AddMessage(message, true, DateTime.Now);
                 ChatDisplay.AddMessage("", false, DateTime.Now);
-                SendTextBox.Clear();
+                SendTextBox.Document = new FlowDocument();
                 result = await ViewModel.SendMessage(message);                
             }
+        }
+
+        private void AttachmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = ViewModel.OnPickAttach();
+            if (!string.IsNullOrEmpty(filePath)) {
+                InsertFileHyperlink(filePath, Path.GetFileName(filePath));
+            }
+        }
+
+        private void InsertFileHyperlink(string filePath, string fileName)
+        {
+            // 获取当前光标位置
+            TextPointer caretPosition = SendTextBox.CaretPosition;
+
+            // 创建超链接
+            System.Windows.Documents.Hyperlink hyperlink = new System.Windows.Documents.Hyperlink();
+            hyperlink.Foreground = Brushes.Blue;
+            hyperlink.TextDecorations = TextDecorations.Underline;
+            hyperlink.Cursor = System.Windows.Input.Cursors.Hand; // 设置手形光标
+
+            // 设置NavigateUri（必须设置才能触发RequestNavigate事件）
+            hyperlink.NavigateUri = new Uri(filePath, UriKind.RelativeOrAbsolute);
+
+            // 添加文件名文本到超链接
+            System.Windows.Documents.Run linkText = new System.Windows.Documents.Run(fileName);
+            hyperlink.Inlines.Add(linkText);
+
+            // 使用RequestNavigate事件而不是Click事件
+            hyperlink.Click += Hyperlink_Click;
+
+            // 将超链接插入到当前光标位置
+            System.Windows.Documents.Paragraph currentParagraph = caretPosition.Paragraph;
+            if (currentParagraph != null)
+            {
+                // 如果当前有段落，直接插入到光标位置
+                TextPointer insertPosition = caretPosition;
+                insertPosition.Paragraph.Inlines.Add(hyperlink);
+                insertPosition.Paragraph.Inlines.Add(new System.Windows.Documents.Run(" ")); // 添加空格分隔
+            }
+            else
+            {
+                // 如果没有当前段落，创建新段落
+                System.Windows.Documents.Paragraph newParagraph = new System.Windows.Documents.Paragraph();
+                newParagraph.Inlines.Add(hyperlink);
+                SendTextBox.Document.Blocks.Add(newParagraph);
+            }
+
+            // 将光标移动到插入内容之后
+            SendTextBox.CaretPosition = hyperlink.ContentEnd.GetNextInsertionPosition(LogicalDirection.Forward) ?? hyperlink.ContentEnd;
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("click!");
         }
     }
 }

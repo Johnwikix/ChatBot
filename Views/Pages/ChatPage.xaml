@@ -49,7 +49,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="SendTextBox" Margin="0,10,0,10" Grid.Column="0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+            <RichTextBox 
+                x:Name="SendTextBox" 
+                Margin="0,10,0,10" 
+                Grid.Column="0" 
+                AcceptsReturn="True" 
+                VerticalScrollBarVisibility="Auto"/>
             <Grid Grid.Column="1" Margin="0,0,0,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -75,7 +80,7 @@
                     Margin="10,10,0,0"
                     Grid.Row="2"
                     VerticalAlignment="Stretch"
-                    Command="{Binding ViewModel.PickAttachCommand , Mode=OneWay}"
+                    Click="AttachmentButton_Click"
                     ToolTipService.ToolTip="pdf,docx,txt,md"
                     Appearance="Secondary" />
             </Grid>
