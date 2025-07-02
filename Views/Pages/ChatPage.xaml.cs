@@ -76,8 +76,9 @@ namespace wpfChat.Views.Pages
         {
             AttachmentButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Attach24 };
             ReloadModel.Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowReset24 };
-            LinkButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Link24 };
-            ImgButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Image24 };
+            EndAnswer.Icon = new SymbolIcon { Symbol = SymbolRegular.RecordStop24 };
+            //LinkButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Link24 };
+            //ImgButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Image24 };
         }
 
         private void ProcessBuffer()
@@ -101,40 +102,6 @@ namespace wpfChat.Views.Pages
             }            
         }
 
-
-        //private void UpdateLastestLine(string text) {
-
-        //    int lineIndex = DisplayTextBox.Document.Blocks.Count - 1; // 获取最后一行的索引
-        //    // 获取指定索引的段落
-        //    Paragraph? paragraph = DisplayTextBox.Document.Blocks.ElementAt(lineIndex) as Paragraph;
-        //    if (paragraph == null) return;
-        //    // 清空段落现有内容
-        //    paragraph.Inlines.Clear();
-        //    // 添加新的Run元素
-        //    Run newRun = new Run(text);
-        //    paragraph.Inlines.Add(newRun);
-        //    DisplayTextBox.ScrollToEnd();
-        //}
-
-        //private void AddRichTextBoxLine(string text,bool isInital = false) {
-        //    TextPointer endPosition = DisplayTextBox.Document.ContentEnd;            
-        //    if (DisplayTextBox.Document.Blocks.Count == 1 && isInital) {
-        //        // 如果是第一次初始化，清空现有内容
-        //        DisplayTextBox.Document.Blocks.Clear();
-        //    }
-        //    Paragraph newParagraph = new Paragraph();
-        //    // 添加文本内容（可设置字体、颜色等样式）
-        //    Run run = new Run(text);
-        //    newParagraph.Inlines.Add(run);
-
-        //    // 在结尾处插入新段落
-        //    DisplayTextBox.Document.Blocks.Add(newParagraph);
-
-        //    // 可选：将光标移到新行末尾
-        //    DisplayTextBox.CaretPosition = DisplayTextBox.Document.ContentEnd;
-        //    DisplayTextBox.ScrollToEnd();
-        //}
-
         private async void SendBtn_Click(object sender, RoutedEventArgs e)
         {
             TextRange textRange = new TextRange(
@@ -156,61 +123,12 @@ namespace wpfChat.Views.Pages
                 SendTextBox.Document = new FlowDocument();
                 result = await ViewModel.SendMessage(message);                
             }
+
         }
 
         private void AttachmentButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath = ViewModel.OnPickAttach();
-            if (!string.IsNullOrEmpty(filePath)) {
-                InsertFileHyperlink(filePath, Path.GetFileName(filePath));
-            }
-        }
-
-        private void InsertFileHyperlink(string filePath, string fileName)
-        {
-            // 获取当前光标位置
-            TextPointer caretPosition = SendTextBox.CaretPosition;
-
-            // 创建超链接
-            System.Windows.Documents.Hyperlink hyperlink = new System.Windows.Documents.Hyperlink();
-            hyperlink.Foreground = Brushes.Blue;
-            hyperlink.TextDecorations = TextDecorations.Underline;
-            hyperlink.Cursor = System.Windows.Input.Cursors.Hand; // 设置手形光标
-
-            // 设置NavigateUri（必须设置才能触发RequestNavigate事件）
-            hyperlink.NavigateUri = new Uri(filePath, UriKind.RelativeOrAbsolute);
-
-            // 添加文件名文本到超链接
-            System.Windows.Documents.Run linkText = new System.Windows.Documents.Run(fileName);
-            hyperlink.Inlines.Add(linkText);
-
-            // 使用RequestNavigate事件而不是Click事件
-            hyperlink.Click += Hyperlink_Click;
-
-            // 将超链接插入到当前光标位置
-            System.Windows.Documents.Paragraph currentParagraph = caretPosition.Paragraph;
-            if (currentParagraph != null)
-            {
-                // 如果当前有段落，直接插入到光标位置
-                TextPointer insertPosition = caretPosition;
-                insertPosition.Paragraph.Inlines.Add(hyperlink);
-                insertPosition.Paragraph.Inlines.Add(new System.Windows.Documents.Run(" ")); // 添加空格分隔
-            }
-            else
-            {
-                // 如果没有当前段落，创建新段落
-                System.Windows.Documents.Paragraph newParagraph = new System.Windows.Documents.Paragraph();
-                newParagraph.Inlines.Add(hyperlink);
-                SendTextBox.Document.Blocks.Add(newParagraph);
-            }
-
-            // 将光标移动到插入内容之后
-            SendTextBox.CaretPosition = hyperlink.ContentEnd.GetNextInsertionPosition(LogicalDirection.Forward) ?? hyperlink.ContentEnd;
-        }
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine("click!");
-        }
+        }        
     }
 }

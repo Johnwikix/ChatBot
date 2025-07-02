@@ -11,6 +11,9 @@ using wpfChat.Services;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
+using System.Net.Mail;
+using Attachment = wpfChat.Models.Attachment;
 
 namespace wpfChat.ViewModels.Pages
 {
@@ -30,6 +33,8 @@ namespace wpfChat.ViewModels.Pages
         private string _reloadBtn = "重载模型";
         private string _attachMessage = string.Empty;
         private bool _isDocAttach = false;
+        [ObservableProperty]
+        private ObservableCollection<Attachment> _attachments = new ObservableCollection<Attachment>();
 
         public EventHandler<string> updateResultEvent;
         public EventHandler clearRichTextBoxEvent;
@@ -62,9 +67,11 @@ namespace wpfChat.ViewModels.Pages
 
         public async Task<string> SendMessage(string message)
         {
-            if(_isDocAttach)
+            AddAttachmentContent();            
+            if (_isDocAttach)
             {
-                message = $"{message}\n\n附件内容：\n{_attachMessage}";
+                message = $"{message}\n\n{_attachMessage}";
+                Debug.WriteLine($"message: {message}");
                 _isDocAttach = false; // 重置附件状态
                 _attachMessage = string.Empty; // 清空附件内容
             }
@@ -87,33 +94,40 @@ namespace wpfChat.ViewModels.Pages
                 try
                 {
                     filePath = openFileDialog.FileName;
-                    _attachMessage = AttachService.GetAttach(filePath);
-                    _isDocAttach = true;
-                    Debug.WriteLine($"选中的文件内容: {_attachMessage}");
+                    //_attachMessage = AttachService.GetAttach(filePath);
+                    //_isDocAttach = true;
+                    //Debug.WriteLine($"选中的文件内容: {_attachMessage}");
                 }
                 catch (Exception ex)
                 {
                     NotificationService.sendToast("错误", $"选择文件时发生错误: {ex.Message}");
                 }
             }
+            Attachments.Add(new Attachment
+            {
+                FileName = Path.GetFileName(filePath),
+                FilePath = filePath,
+            });
             return filePath;
         }
 
-        public void OpenFile(string filePath)
+        [RelayCommand]
+        private void OnFileOpen(string parameter)
         {
+            Debug.WriteLine(parameter);
             try
             {
-                if (File.Exists(filePath))
+                if (File.Exists(parameter))
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = filePath,
+                        FileName = parameter,
                         UseShellExecute = true
                     });
                 }
                 else
                 {
-                    NotificationService.sendToast("错误", $"文件不存在: {filePath}");
+                    NotificationService.sendToast("错误", $"文件不存在: {parameter}");
                 }
             }
             catch (Exception ex)
@@ -122,5 +136,35 @@ namespace wpfChat.ViewModels.Pages
             }
         }
 
+        [RelayCommand]
+        private void OnEndAnswer()
+        {
+            _llmService.StopAnswer();
+        }
+
+        private void AddAttachmentContent()
+        {
+            _isDocAttach = true; // 设置附件状态为已附加
+            int count = 0;
+            _attachMessage += "以下是文档内容:";
+            foreach (Attachment attachment in Attachments) {
+                if (File.Exists(attachment.FilePath))
+                {
+                    try
+                    {
+                        //_attachMessage += $"文档内容:{attachment.FileName}\n";
+                        _attachMessage += AttachService.GetAttach(attachment.FilePath) + "\n\n";
+                    }
+                    catch (Exception ex)
+                    {
+                        NotificationService.sendToast("错误", $"读取附件内容时发生错误: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    NotificationService.sendToast("错误", $"附件文件不存在: {attachment.FilePath}");
+                }
+            }
+        }
     }
 }

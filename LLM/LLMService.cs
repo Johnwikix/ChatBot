@@ -22,6 +22,7 @@ namespace wpfChat.LLM
         public EventHandler<string> updateResult;
         public EventHandler<bool> isModelLoaded;
         private string _currentModelPath;
+        private bool _mannalEnd = false; // 是否手动结束回答
         //private NotificationService _notificationService;
 
         public LLMService(string modelPath)
@@ -114,7 +115,7 @@ namespace wpfChat.LLM
                 {
                     response += text;
                     tokenCount++;
-                    Debug.WriteLine(response);
+                    //Debug.WriteLine(response);
                     updateResult?.Invoke(this, response); // 更新结果
                     //检查是否达到合理的停止条件
                     if (tokenCount >= AppConfig.MaxTokens)
@@ -128,6 +129,12 @@ namespace wpfChat.LLM
                     {
                         Debug.WriteLine("检测到自然结束，停止生成");
                         break;
+                    }
+
+                    if (_mannalEnd) {
+                        Debug.WriteLine("手动结束生成");
+                        _mannalEnd = false; // 重置手动结束状态
+                        break; // 手动结束，停止生成
                     }
                 }
 
@@ -190,6 +197,10 @@ namespace wpfChat.LLM
             }
 
             return false;
+        }
+
+        public void StopAnswer() {
+            _mannalEnd = true;
         }
 
         private string CleanResponse(string response)

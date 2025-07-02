@@ -45,6 +45,7 @@
             Grid.Row="1"
 	        ItemsSource="{Binding ViewModel.ModelList, Mode=TwoWay}"                        
 	        SelectionMode="Single"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectedItem="{Binding ViewModel.SelectedModel, Mode=TwoWay}"
             SelectionChanged="ModelListView_SelectionChanged"
             >
