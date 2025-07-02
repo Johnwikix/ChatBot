@@ -159,23 +159,6 @@ namespace wpfChat.LLM
             if (string.IsNullOrEmpty(response))
                 return false;
 
-            // 检查是否以句号、问号、感叹号等结束
-            //string trimmed = response.TrimEnd();
-            //if (trimmed.EndsWith(".") || trimmed.EndsWith("。") ||
-            //    trimmed.EndsWith("!") || trimmed.EndsWith("！") ||
-            //    trimmed.EndsWith("?") || trimmed.EndsWith("？"))
-            //{
-            //    // 确保不是在句子中间
-            //    string[] lines = response.Split('\n');
-            //    string lastLine = lines[lines.Length - 1].Trim();
-
-            //    // 如果最后一行看起来是完整的句子，且不是很短
-            //    if (lastLine.Length > 10 && !lastLine.EndsWith("..."))
-            //    {
-            //        return true;
-            //    }
-            //}
-
             // 检查是否包含明显的结束模式
             string[] endPatterns = {
                 "希望这能帮到你",
@@ -262,12 +245,6 @@ namespace wpfChat.LLM
             }
 
             return false;
-        }
-
-        // 重置对话历史
-        public void ResetChatHistory()
-        {
-            _chatHistory.AddMessage(AuthorRole.System, "用户与名为智能体的助手交互的对话记录。智能体乐于助人，善良，诚实，善于写作，并且总是能立即准确地回答用户的请求。");
         }
 
         // 释放资源
