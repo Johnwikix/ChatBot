@@ -94,9 +94,6 @@ namespace wpfChat.ViewModels.Pages
                 try
                 {
                     filePath = openFileDialog.FileName;
-                    //_attachMessage = AttachService.GetAttach(filePath);
-                    //_isDocAttach = true;
-                    //Debug.WriteLine($"选中的文件内容: {_attachMessage}");
                 }
                 catch (Exception ex)
                 {
@@ -141,18 +138,22 @@ namespace wpfChat.ViewModels.Pages
         {
             _llmService.StopAnswer();
         }
+        [RelayCommand]
+        private void OnClearAttachment() {
+            Attachments.Clear(); // 清空附件列表
+            _isDocAttach = false; // 重置附件状态
+            _attachMessage = string.Empty; // 清空附件内容
+        }
 
         private void AddAttachmentContent()
         {
             _isDocAttach = true; // 设置附件状态为已附加
-            int count = 0;
             _attachMessage += "以下是文档内容:";
             foreach (Attachment attachment in Attachments) {
                 if (File.Exists(attachment.FilePath))
                 {
                     try
                     {
-                        //_attachMessage += $"文档内容:{attachment.FileName}\n";
                         _attachMessage += AttachService.GetAttach(attachment.FilePath) + "\n\n";
                     }
                     catch (Exception ex)

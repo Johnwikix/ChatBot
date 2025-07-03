@@ -39,5 +39,10 @@ namespace wpfChat.Views.Pages
         {
             ViewModel.EndPromptChanged(InitalPromptEndBox.Text);
         }
+
+        private void PromptPresetBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

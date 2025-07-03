@@ -36,7 +36,8 @@ namespace wpfChat.Views.Windows
                     TotalLayers = AppConfig.TotalLayers,
                     MaxTokens = AppConfig.MaxTokens,
                     InitialPrompt = AppConfig.InitialPrompt,
-                    EndPrompt = AppConfig.EndPrompt
+                    EndPrompt = AppConfig.EndPrompt,
+                    SelectPromptName = AppConfig.SelectPromptName
                 };
                 DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
                 {

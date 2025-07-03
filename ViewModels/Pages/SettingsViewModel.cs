@@ -1,4 +1,6 @@
-﻿using Wpf.Ui.Abstractions.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Appearance;
 using wpfChat.Data;
 using wpfChat.Models;
@@ -24,6 +26,19 @@ namespace wpfChat.ViewModels.Pages
         private string _initalPrompt = AppConfig.InitialPrompt;
         [ObservableProperty]
         private string _endPrompt = AppConfig.EndPrompt;
+        [ObservableProperty]
+        private Prompt _selectedPromptPreset;
+        partial void OnSelectedPromptPresetChanged(Prompt value)
+        {
+            if (value != null && _isInitialized)
+            {
+                InitalPrompt = value.Content;
+                EndPrompt = value.End;
+                AppConfig.SelectPromptName = value.Name;
+            }
+        }
+        [ObservableProperty]
+        private ObservableCollection<Prompt> _promptPresets = AppConfig.PromptPresets;
 
         public Task OnNavigatedToAsync()
         {
@@ -39,6 +54,8 @@ namespace wpfChat.ViewModels.Pages
         {
             CurrentTheme = ApplicationThemeManager.GetAppTheme();
             AppVersion = $"UiDesktopApp1 - {GetAssemblyVersion()}";
+            SelectedPromptPreset = AppConfig.PromptPresets.FirstOrDefault(p => p.Name == AppConfig.SelectPromptName)
+                ?? AppConfig.PromptPresets.FirstOrDefault();
             _isInitialized = true;
         }
 

@@ -35,6 +35,7 @@ namespace wpfChat.Data
                 AppConfig.MaxTokens = config.MaxTokens;
                 AppConfig.InitialPrompt = config.InitialPrompt;
                 AppConfig.EndPrompt = config.EndPrompt;
+                AppConfig.SelectPromptName = config.SelectPromptName;
             }            
         }
 
@@ -71,7 +72,8 @@ namespace wpfChat.Data
                 TotalLayers = AppConfig.TotalLayers,
                 MaxTokens = AppConfig.MaxTokens,
                 InitialPrompt = AppConfig.InitialPrompt,
-                EndPrompt = AppConfig.EndPrompt
+                EndPrompt = AppConfig.EndPrompt,
+                SelectPromptName = AppConfig.SelectPromptName
             };
             await SaveAppConfigAsync(config);
             Debug.WriteLine("应用配置已保存。");

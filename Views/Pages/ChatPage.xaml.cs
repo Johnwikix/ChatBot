@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -29,17 +30,12 @@ namespace wpfChat.Views.Pages
             InitializeStyle();
             viewModel.updateResultEvent += (sender, result) =>
             {
-                // 将新文本添加到缓冲区
                 _displayText = result;
-                // 处理缓冲区，过滤前缀
-                //ProcessBuffer();
-                // 使用Dispatcher确保在UI线程执行
                 Dispatcher.Invoke(() =>
                 {
                     const int userPrefixLength = 5;
                     string userPrefix = "User:";
                     string displayText;
-                    // 确保有足够的字符进行检查
                     if (_displayText.Length >= userPrefixLength)
                     {
                         string lastChars = _displayText.Substring(_displayText.Length - userPrefixLength);
@@ -77,29 +73,9 @@ namespace wpfChat.Views.Pages
             AttachmentButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Attach24 };
             ReloadModel.Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowReset24 };
             EndAnswer.Icon = new SymbolIcon { Symbol = SymbolRegular.RecordStop24 };
+            ClearAttachmentButton.Icon = new SymbolIcon { Symbol = SymbolRegular.SubtractCircle24 };
             //LinkButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Link24 };
             //ImgButton.Icon = new SymbolIcon { Symbol = SymbolRegular.Image24 };
-        }
-
-        private void ProcessBuffer()
-        {
-            // 检查缓冲区中是否包含完整的Assistant:前缀
-            const string assistantPrefix = "Assistant";
-            const string systemPrefix = "System";
-            // 检查是否有完整的Assistant:前缀
-            if (_rawBuffer.Contains(assistantPrefix))
-            {
-                int prefixIndex = _rawBuffer.IndexOf(assistantPrefix, StringComparison.OrdinalIgnoreCase);
-                string contentAfterPrefix = _rawBuffer.Substring(prefixIndex + assistantPrefix.Length).TrimStart();
-                _displayText = contentAfterPrefix;
-                _rawBuffer = "";
-            } else if (_rawBuffer.Contains(systemPrefix)) {
-                // 检查是否有完整的System:前缀
-                int prefixIndex = _rawBuffer.IndexOf(systemPrefix, StringComparison.OrdinalIgnoreCase);
-                string contentAfterPrefix = _rawBuffer.Substring(prefixIndex + systemPrefix.Length).TrimStart();
-                _displayText = contentAfterPrefix;
-                _rawBuffer = "";
-            }            
         }
 
         private async void SendBtn_Click(object sender, RoutedEventArgs e)
@@ -108,7 +84,6 @@ namespace wpfChat.Views.Pages
                 SendTextBox.Document.ContentStart,
                 SendTextBox.Document.ContentEnd);
             string message = textRange.Text;
-            // 移除末尾的换行符（处理 \r\n 或 \n）
             if (message.EndsWith("\r\n"))
                 message = message.Substring(0, message.Length - 2);
             else if (message.EndsWith("\n"))

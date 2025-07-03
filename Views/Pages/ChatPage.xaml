@@ -42,7 +42,6 @@
         <userControls:ChatBubbleControl x:Name="ChatDisplay" 
                                  Grid.Row="1"
                                  Margin="0,10,0,10"/>
-        <!--<RichTextBox x:Name="DisplayTextBox" Margin="0,10,0,10" Grid.Row="1" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />-->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -61,13 +60,20 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
-                <TextBlock 
-                    x:Name="ChatTitle" 
-                    Margin="10,10,0,10" 
-                    Grid.Row="0" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    Text="附件" />
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock 
+                        x:Name="ChatTitle" 
+                        Margin="10,10,0,10" 
+                        Grid.Row="0" 
+                        VerticalAlignment="Center" 
+                        FontSize="18" 
+                        Text="附件" />
+                    <ui:Button 
+                        x:Name="ClearAttachmentButton" 
+                        Margin="10,10,0,10" 
+                        Command="{Binding ViewModel.ClearAttachmentCommand,Mode=OneWay}" 
+                        Appearance="Secondary" />
+                </StackPanel>                
                 <ui:ListView 
                     x:Name="AttachmentList"
                     Grid.Row="1"
@@ -78,6 +84,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <ui:Button 
+                                    x:Name="OpenFile"
                                     Content="打开"  
                                     CommandParameter="{Binding FilePath}" 
                                     Command="{Binding DataContext.ViewModel.FileOpenCommand,ElementName=AttachmentList,Mode=OneWay}" >                                 
