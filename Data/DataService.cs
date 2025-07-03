@@ -36,6 +36,13 @@ namespace wpfChat.Data
                 AppConfig.InitialPrompt = config.InitialPrompt;
                 AppConfig.EndPrompt = config.EndPrompt;
                 AppConfig.SelectPromptName = config.SelectPromptName;
+                AppConfig.Temperature = config.Temperature;
+                AppConfig.RepeatPenalty = config.RepeatPenalty;
+                AppConfig.TopK = config.TopK;
+                AppConfig.TopP = config.TopP;
+                AppConfig.TypicalP = config.TypicalP;
+                AppConfig.PreventEOS = config.PreventEOS;
+                AppConfig.MinKeep = config.MinKeep;
             }            
         }
 
@@ -73,7 +80,14 @@ namespace wpfChat.Data
                 MaxTokens = AppConfig.MaxTokens,
                 InitialPrompt = AppConfig.InitialPrompt,
                 EndPrompt = AppConfig.EndPrompt,
-                SelectPromptName = AppConfig.SelectPromptName
+                SelectPromptName = AppConfig.SelectPromptName,
+                Temperature = AppConfig.Temperature,
+                RepeatPenalty = AppConfig.RepeatPenalty,
+                TopK = AppConfig.TopK,
+                TopP = AppConfig.TopP,
+                TypicalP = AppConfig.TypicalP,
+                PreventEOS = AppConfig.PreventEOS,
+                MinKeep = AppConfig.MinKeep
             };
             await SaveAppConfigAsync(config);
             Debug.WriteLine("应用配置已保存。");

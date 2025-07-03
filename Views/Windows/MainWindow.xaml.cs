@@ -28,18 +28,7 @@ namespace wpfChat.Views.Windows
             navigationService.SetNavigationControl(RootNavigation);
             this.Closed += (sender, args) =>
             {
-                SaveConfig saveConfig = new SaveConfig
-                {
-                    ModelFolder = AppConfig.ModelFolder,
-                    ModelPath = AppConfig.ModelPath,
-                    ContextSize = AppConfig.ContextSize,
-                    TotalLayers = AppConfig.TotalLayers,
-                    MaxTokens = AppConfig.MaxTokens,
-                    InitialPrompt = AppConfig.InitialPrompt,
-                    EndPrompt = AppConfig.EndPrompt,
-                    SelectPromptName = AppConfig.SelectPromptName
-                };
-                DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
+                DataService.SaveAllAppConfigAsync().ContinueWith(task =>
                 {
                     if (task.IsFaulted)
                     {

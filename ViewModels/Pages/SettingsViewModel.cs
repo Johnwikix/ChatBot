@@ -27,7 +27,9 @@ namespace wpfChat.ViewModels.Pages
         [ObservableProperty]
         private string _endPrompt = AppConfig.EndPrompt;
         [ObservableProperty]
-        private Prompt _selectedPromptPreset;
+        private ObservableCollection<Prompt> _promptPresets = AppConfig.PromptPresets;
+        [ObservableProperty]
+        private Prompt _selectedPromptPreset = new Prompt();
         partial void OnSelectedPromptPresetChanged(Prompt value)
         {
             if (value != null && _isInitialized)
@@ -35,10 +37,76 @@ namespace wpfChat.ViewModels.Pages
                 InitalPrompt = value.Content;
                 EndPrompt = value.End;
                 AppConfig.SelectPromptName = value.Name;
+                _ = DataService.SaveAllAppConfigAsync();
+            }
+        }
+        private double _temperature = AppConfig.Temperature;
+        public double Temperature
+        {
+            get => _temperature;
+            set
+            {
+                if (SetProperty(ref _temperature, value)) {
+                    if (_isInitialized)
+                    {
+                        AppConfig.Temperature = (float)value;
+                        _=DataService.SaveAllAppConfigAsync();
+                    }
+                }
+            }
+        }
+
+
+        [ObservableProperty]
+        private double _typicalP = AppConfig.TypicalP;
+        partial void OnTypicalPChanged(double value)
+        {
+            if (_isInitialized)
+            {
+                AppConfig.TypicalP = (float)value;
+                _ = DataService.SaveAllAppConfigAsync();
             }
         }
         [ObservableProperty]
-        private ObservableCollection<Prompt> _promptPresets = AppConfig.PromptPresets;
+        private double _topP = AppConfig.TopP;
+        partial void OnTopPChanged(double value)
+        {
+            if (_isInitialized)
+            {
+                AppConfig.TopP = (float)value;
+                _ = DataService.SaveAllAppConfigAsync();
+            }
+        }
+        [ObservableProperty]
+        private double _topK = AppConfig.TopK;
+        partial void OnTopKChanged(double value)
+        {
+            if (_isInitialized)
+            {
+                AppConfig.TopK = (int)value;
+                _ = DataService.SaveAllAppConfigAsync();
+            }
+        }
+        [ObservableProperty]
+        private double _repeatPenalty = AppConfig.RepeatPenalty;
+        partial void OnRepeatPenaltyChanged(double value)
+        {
+            if (_isInitialized)
+            {
+                AppConfig.RepeatPenalty = (float)value;
+                _ = DataService.SaveAllAppConfigAsync();
+            }
+        }
+        [ObservableProperty]
+        private double _minKeep = AppConfig.MinKeep;
+        partial void OnMinKeepChanged(double value)
+        {
+            if (_isInitialized)
+            {
+                AppConfig.MinKeep = (int)value;
+                _ = DataService.SaveAllAppConfigAsync();
+            }
+        }        
 
         public Task OnNavigatedToAsync()
         {

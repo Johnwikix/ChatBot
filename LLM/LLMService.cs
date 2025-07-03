@@ -89,12 +89,13 @@ namespace wpfChat.LLM
                     "\nHuman:"         // 换行后的人类提示符
                 },
                 SamplingPipeline = new DefaultSamplingPipeline{
-                    Temperature = 0.75f,         // 降低随机性，提高稳定性
-                    RepeatPenalty = 1.1f,       // 适度的重复惩罚
-                    TopK = 40,                  // 添加TopK采样
-                    TopP = 0.9f,                // 添加TopP采样
-                    PreventEOS = false,         // 允许模型生成结束符
-                    MinKeep = 1,               // 至少保留1个候选token   
+                    Temperature = AppConfig.Temperature,         // 降低随机性，提高稳定性
+                    RepeatPenalty = AppConfig.RepeatPenalty,       // 适度的重复惩罚
+                    TypicalP = AppConfig.TypicalP,                  // 关闭典型采样
+                    TopK = AppConfig.TopK,                  // 添加TopK采样
+                    TopP = AppConfig.TopP,                // 添加TopP采样
+                    PreventEOS = AppConfig.PreventEOS,         // 允许模型生成结束符
+                    MinKeep = AppConfig.MinKeep,               // 至少保留1个候选token   
                 }
             };
             Debug.WriteLine("模型加载完成。");

@@ -32,21 +32,8 @@ namespace wpfChat.Views.Pages
                 if (!selectedModel.Path.Equals(AppConfig.ModelPath)) {
                     AppConfig.ModelPath = selectedModel.Path;
                     ViewModel.ChangeModel(AppConfig.ModelPath);
-                }               
-
-                // 可以在这里添加其他处理逻辑
-                SaveConfig saveConfig = new SaveConfig
-                {
-                    ModelFolder = AppConfig.ModelFolder,
-                    ModelPath = AppConfig.ModelPath,
-                    ContextSize = AppConfig.ContextSize,
-                    TotalLayers = AppConfig.TotalLayers,
-                    MaxTokens = AppConfig.MaxTokens,
-                    InitialPrompt = AppConfig.InitialPrompt,
-                    EndPrompt = AppConfig.EndPrompt
-                };
-                
-                DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
+                }  
+                DataService.SaveAllAppConfigAsync().ContinueWith(task =>
                 {
                     if (task.IsFaulted)
                     {

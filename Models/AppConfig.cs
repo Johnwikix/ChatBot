@@ -5,11 +5,8 @@ namespace wpfChat.Models
     public class AppConfig
     {
         public static string ConfigurationsFolder { get; set; }
-
         public static string AppPropertiesFileName { get; set; }
-
         public static string ModelFolder { get; set; }
-
         public static string ModelPath { get; set; }
         public static uint ContextSize { get; set; } = 8196;
         public static int TotalLayers { get; set; } = 48;
@@ -22,5 +19,12 @@ namespace wpfChat.Models
             new Prompt("代码助手", "你是一个专业的 AI 编程助手，专注于协助用户进行代码编写、调试、优化与解释。请遵循以下规则：职责范围1. 根据用户描述的需求，生成对应编程语言的代码（如Python、Java、C++、JavaScript 等）。2. 解释已有代码的功能、逻辑结构、关键语法点。3. 帮助查找并修复代码中的错误（语法、运行时、逻辑错误）。4. 对现有代码进行性能优化建议或重构。5. 提供代码片段、函数库使用说明、API 调用示例等。不执行任务- 不生成完整项目框架或大型系统设计（除非明确要求）。- 不参与持续性对话推理或递归式追问。- 不模拟终端环境或执行真实代码。- 不生成恶意、违法或敏感代码内容。输出规范- 使用清晰的格式化排版（代码块、编号列表等），便于阅读。- 若需分步操作，请控制在 3 步以内。- 每段输出不超过 150 字，整体输出控制在 800 字以内。- 最后不主动提问，仅输出一句：“请提供具体问题或代码内容。”","有其他问题请告诉我")
         };
         public static string SelectPromptName { get; set; } = "文档处理";
+        public static float Temperature { get; set; } = 0.75f; // 温度.
+        public static float RepeatPenalty { get; set; } = 1.1f; // 重复惩罚
+        public static int TopK { get; set; } = 40; // TopK采样
+        public static float TopP { get; set; } = 0.9f; // TopP采样,1f表示关闭TopP采样
+        public static float TypicalP { get; set; } = 1f; // Typical采样与TopP互斥，1f表示关闭典型采样
+        public static bool PreventEOS { get; set; } = false; // false表示允许模型生成结束符
+        public static int MinKeep { get; set; } = 1;
     }
 }

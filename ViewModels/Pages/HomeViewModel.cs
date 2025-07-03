@@ -56,19 +56,8 @@ namespace wpfChat.ViewModels.Pages
                 // 更新UI显示选择的文件夹路径
                 FolderPath = folderPath;
                 AppConfig.ModelFolder = folderPath;
-                DisplayAndCollectGgufFiles(folderPath);
-                SaveConfig saveConfig = new SaveConfig
-                {
-                    ModelFolder = AppConfig.ModelFolder,
-                    ModelPath = AppConfig.ModelPath,
-                    ContextSize = AppConfig.ContextSize,
-                    TotalLayers = AppConfig.TotalLayers,
-                    MaxTokens = AppConfig.MaxTokens,
-                    InitialPrompt = AppConfig.InitialPrompt,
-                    EndPrompt = AppConfig.EndPrompt,
-                    SelectPromptName = AppConfig.SelectPromptName
-                };
-                DataService.SaveAppConfigAsync(saveConfig).ContinueWith(task =>
+                DisplayAndCollectGgufFiles(folderPath);               
+                DataService.SaveAllAppConfigAsync().ContinueWith(task =>
                 {
                     if (task.IsFaulted)
                     {

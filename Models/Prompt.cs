@@ -20,5 +20,11 @@ namespace wpfChat.Models
             Content = content;
             End = end;
         }
+        public Prompt()
+        {
+            Name = string.Empty;
+            Content = string.Empty;
+            End = string.Empty;
+        }
     }
 }

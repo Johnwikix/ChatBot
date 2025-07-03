@@ -66,52 +66,184 @@
                 <TextBlock Text="模型载入参数" />
             </Expander.Header>
             <Expander.Content>
-                <Grid HorizontalAlignment="Stretch" >
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Total Gpu Layers" FontSize="14"  Grid.Column="0" Grid.Row="0" Margin="10" VerticalAlignment="Center"/>
-                    <ui:NumberBox 
-                        x:Name="TotalLayersBox" 
-                        Value="{Binding ViewModel.TotalLayers, Mode=TwoWay}" 
-                        ValueChanged="TotalLayersBox_ValueChanged" 
-                        Grid.Column="1" 
-                        Grid.Row="0" 
-                        Margin="10" 
-                        Width="200" 
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right"/>
-
-                    <TextBlock Text="Context Size" FontSize="14"  Grid.Column="0" Grid.Row="1" Margin="10" VerticalAlignment="Center"/>
-                    <ui:NumberBox 
-                        x:Name="ContextSizeBox" 
-                        Value="{Binding ViewModel.ContextSize, Mode=TwoWay}"  
-                        Grid.Column="1" 
-                        Grid.Row="1" 
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
                         Margin="10"
-                        Width="200" 
-                        VerticalAlignment="Center" 
-                        ValueChanged="ContextSizeBox_ValueChanged"
-                        HorizontalAlignment="Right"/>
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Total Gpu Layers" />
+                    <ui:NumberBox
+                        x:Name="TotalLayersBox"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        ValueChanged="TotalLayersBox_ValueChanged"
+                        Value="{Binding ViewModel.TotalLayers, Mode=TwoWay}" />
 
-                    <TextBlock Text="Max Tokens" FontSize="14"  Grid.Column="0" Grid.Row="2" Margin="10" VerticalAlignment="Center"/>
-                    <ui:NumberBox 
-                        x:Name="MaxTokensBox" 
-                        Value="{Binding ViewModel.MaxTokens, Mode=TwoWay}"  
-                        Grid.Column="1" 
-                        Grid.Row="2" 
-                        Margin="10" 
-                        Width="200" 
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Context Size" />
+                    <ui:NumberBox
+                        x:Name="ContextSizeBox"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        ValueChanged="ContextSizeBox_ValueChanged"
+                        Value="{Binding ViewModel.ContextSize, Mode=TwoWay}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Max Tokens" />
+                    <ui:NumberBox
+                        x:Name="MaxTokensBox"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         ValueChanged="MaxTokensBox_ValueChanged"
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right"/>
+                        Value="{Binding ViewModel.MaxTokens, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Temperature" />
+                    <ui:NumberBox
+                        x:Name="TemperatureBox"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="0.05"
+                        Value="{Binding ViewModel.Temperature, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="RepeatPenalty" />
+                    <ui:NumberBox
+                        x:Name="RepeatPenaltyBox"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="0.05"
+                        Value="{Binding ViewModel.RepeatPenalty, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="TopK" />
+                    <ui:NumberBox
+                        x:Name="TopKBox"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="1"
+                        Value="{Binding ViewModel.TopK, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="TopP（与TypicalP互斥,1f表示关闭）" />
+                    <ui:NumberBox
+                        x:Name="TopPBox"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="0.05"
+                        Value="{Binding ViewModel.TopP, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="TypicalP（与TopP互斥,1f表示关闭）" />
+                    <ui:NumberBox
+                        x:Name="TypicalPBox"
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="0.05"
+                        Value="{Binding ViewModel.TypicalP, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="MinKeep" />
+                    <ui:NumberBox
+                        x:Name="MinKeepPBox"
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Minimum="0"
+                        SmallChange="1"
+                        Value="{Binding ViewModel.MinKeep, Mode=TwoWay}" />
 
                 </Grid>
             </Expander.Content>
@@ -121,64 +253,81 @@
                 <TextBlock Text="初始化Prompt" />
             </Expander.Header>
             <Expander.Content>
-                <Grid HorizontalAlignment="Stretch" >
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="预设prompt" FontSize="14"  Grid.Column="0" Grid.Row="0" Margin="10" VerticalAlignment="Center"/>
-                    <ComboBox 
-                        x:Name="PromptPresetBox" 
-                        SelectedItem="{Binding ViewModel.SelectedPromptPreset, Mode=TwoWay}" 
-                        ItemsSource="{Binding ViewModel.PromptPresets, Mode=OneWay}" 
-                        DisplayMemberPath="Name" 
-                        Grid.Column="1" 
-                        Grid.Row="0" 
-                        Margin="10" 
-                        Width="300"
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right"                        
-                        SelectionChanged="PromptPresetBox_SelectionChanged"/>
-                    <TextBlock Text="初始化prompt" FontSize="14"  Grid.Column="0" Grid.Row="2" Margin="10" VerticalAlignment="Center"/>
-                    <ui:TextBox  
-                        Text="{Binding ViewModel.InitalPrompt, Mode=TwoWay}"  
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="预设prompt" />
+                    <ComboBox
+                        x:Name="PromptPresetBox"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding ViewModel.PromptPresets, Mode=OneWay}"
+                        SelectedItem="{Binding ViewModel.SelectedPromptPreset, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="初始化prompt" />
+                    <ui:TextBox
+                        x:Name="InitalPromptBox"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="150"
+                        Margin="10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        AcceptsReturn="True"
+                        Text="{Binding ViewModel.InitalPrompt, Mode=TwoWay}"
                         TextChanged="InitalPromptBox_TextChanged"
-                        x:Name="InitalPromptBox" 
-                        Grid.Column="1" 
-                        Grid.Row="2" 
-                        AcceptsReturn="True"
-                        Margin="10" 
-                        Height="150"  
-                        VerticalAlignment="Center" 
-                        TextWrapping ="Wrap"
-                        VerticalScrollBarVisibility="Auto"
-                        HorizontalAlignment="Stretch"/>
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
 
-                    <TextBlock Text="回答结束语" FontSize="14"  Grid.Column="0" Grid.Row="3" Margin="10" VerticalAlignment="Center"/>
-                    <ui:TextBox 
-                        x:Name="InitalPromptEndBox" 
-                        Text="{Binding ViewModel.EndPrompt, Mode=TwoWay}"  
-                        TextChanged="InitalPromptEndBox_TextChanged"
-                        Grid.Column="1" 
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="回答结束语" />
+                    <ui:TextBox
+                        x:Name="InitalPromptEndBox"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         AcceptsReturn="True"
-                        Grid.Row="3" 
-                        Margin="10"   
-                        TextWrapping ="Wrap"
-                        VerticalScrollBarVisibility="Auto"
-                        VerticalAlignment="Center"                         
-                        HorizontalAlignment="Stretch"/>                    
+                        Text="{Binding ViewModel.EndPrompt, Mode=TwoWay}"
+                        TextChanged="InitalPromptEndBox_TextChanged"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
 
                 </Grid>
             </Expander.Content>
         </Expander>
     </Grid>
-    
+
 </Page>
