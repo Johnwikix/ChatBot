@@ -20,6 +20,7 @@ namespace wpfChat.Views.Pages
         }
         private void InitializeStyle() {
             PickFolder.Icon = new SymbolIcon { Symbol = SymbolRegular.FolderAdd24 };
+            DownloadModel.Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowDownload24 };
         }
 
         private void ModelListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

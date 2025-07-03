@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using wpfChat.Data;
 using wpfChat.LLM;
 using wpfChat.Models;
@@ -71,6 +72,21 @@ namespace wpfChat.ViewModels.Pages
                 ChangeModel(AppConfig.ModelPath);
             }
         }
+
+        [RelayCommand]
+        private void OnDownloadModel()
+        {
+            try
+            {
+                string url = "https://huggingface.co/";
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"打开下载链接时出错: {ex.Message}");
+            }
+        }
+        
 
         public void ChangeModel(string modelPath) {
             _llmService.ChangeModelAsync(modelPath).ContinueWith(task =>

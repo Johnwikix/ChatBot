@@ -25,6 +25,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ui:Button
                 x:Name="PickFolder"
@@ -33,9 +34,17 @@
                 Command="{Binding ViewModel.PickFolderCommand, Mode=OneWay}"
                 FontSize="24"
                 Icon="FolderAdd24" />
+            <ui:Button
+                x:Name="DownloadModel"
+                Grid.Column="1"
+                Margin="12,0,0,0"
+                Appearance="Primary"
+                Command="{Binding ViewModel.DownloadModelCommand, Mode=OneWay}"
+                FontSize="24"
+                Icon="ArrowDownload24" />
             <TextBlock
                 x:Name="SelectedPathTextBox"
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="12,0,0,0"
                 VerticalAlignment="Center"
                 Text="{Binding ViewModel.FolderPath, Mode=OneWay}" />
