@@ -28,11 +28,11 @@
             </Grid.ColumnDefinitions>
             <ui:Button
                 x:Name="PickFolder"
-                FontSize="24"
+                Grid.Column="0"
                 Appearance="Primary"
-                Icon="FolderAdd24"
                 Command="{Binding ViewModel.PickFolderCommand, Mode=OneWay}"
-                Grid.Column="0"/>
+                FontSize="24"
+                Icon="FolderAdd24" />
             <TextBlock
                 x:Name="SelectedPathTextBox"
                 Grid.Column="1"
@@ -40,28 +40,27 @@
                 VerticalAlignment="Center"
                 Text="{Binding ViewModel.FolderPath, Mode=OneWay}" />
         </Grid>
-        <ui:ListView  
+        <ui:ListView
             x:Name="ModelListView"
             Grid.Row="1"
-	        ItemsSource="{Binding ViewModel.ModelList, Mode=TwoWay}"                        
-	        SelectionMode="Single"
+            ItemsSource="{Binding ViewModel.ModelList, Mode=TwoWay}"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectedItem="{Binding ViewModel.SelectedModel, Mode=TwoWay}"
             SelectionChanged="ModelListView_SelectionChanged"
-            >
+            SelectionMode="Single">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Text="{Binding Name}"
                             Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            FontSize="18" />
+                            FontSize="18"
+                            Text="{Binding Name}" />
                         <TextBlock
-                            Text="{Binding Path}"
                             Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            FontSize="14" />
+                            FontSize="14"
+                            Text="{Binding Path}" />
                     </StackPanel>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>
