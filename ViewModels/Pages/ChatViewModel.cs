@@ -148,24 +148,27 @@ namespace wpfChat.ViewModels.Pages
         private void AddAttachmentContent()
         {
             _isDocAttach = true; // 设置附件状态为已附加
-            _attachMessage += "以下是文档内容:";
-            foreach (Attachment attachment in Attachments) {
-                if (File.Exists(attachment.FilePath))
+            if (Attachments != null && Attachments.Count > 0) {
+                _attachMessage += "以下是文档内容:";
+                foreach (Attachment attachment in Attachments)
                 {
-                    try
+                    if (File.Exists(attachment.FilePath))
                     {
-                        _attachMessage += AttachService.GetAttach(attachment.FilePath) + "\n\n";
+                        try
+                        {
+                            _attachMessage += AttachService.GetAttach(attachment.FilePath) + "\n\n";
+                        }
+                        catch (Exception ex)
+                        {
+                            NotificationService.sendToast("错误", $"读取附件内容时发生错误: {ex.Message}");
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        NotificationService.sendToast("错误", $"读取附件内容时发生错误: {ex.Message}");
+                        NotificationService.sendToast("错误", $"附件文件不存在: {attachment.FilePath}");
                     }
                 }
-                else
-                {
-                    NotificationService.sendToast("错误", $"附件文件不存在: {attachment.FilePath}");
-                }
-            }
+            }           
         }
     }
 }

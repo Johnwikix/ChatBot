@@ -76,7 +76,8 @@ namespace wpfChat.LLM
 
             // 初始化对话历史
             _chatHistory = new ChatHistory();
-            _chatHistory.AddMessage(AuthorRole.System, $"{AppConfig.InitialPrompt},在回答结束时加上结束语：{AppConfig.EndPrompt}");
+            string endprompt = string.IsNullOrEmpty(AppConfig.EndPrompt) ? "": $",在回答结束时加上结束语：{ AppConfig.EndPrompt}";
+            _chatHistory.AddMessage(AuthorRole.System, $"{AppConfig.InitialPrompt}{endprompt}");
 
             // 配置推理参数
             _inferenceParams = new InferenceParams()
@@ -168,8 +169,7 @@ namespace wpfChat.LLM
                 "如果你有其他问题",
                 "Hope this helps",
                 "Let me know if you need",
-                "Is there anything else",
-                AppConfig.EndPrompt
+                "Is there anything else"
             };
 
             foreach (string pattern in endPatterns)
