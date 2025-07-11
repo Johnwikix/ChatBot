@@ -108,6 +108,10 @@ namespace wpfChat.ViewModels.Pages
             {
                 // 清空现有列表
                 ModelList.Clear();
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
                 // 获取所有 .gguf 文件
                 string[] ggufFiles = Directory.GetFiles(folderPath, "*.gguf");
                 foreach (string file in ggufFiles)

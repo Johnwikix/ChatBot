@@ -1,6 +1,6 @@
 # ChatBot - 本地大模型对话工具
 ## 一、工具简介
-ChatBot 是基于 WPF MVVM设计模式和LLamaSharp开发的本地大模型对话应用，具备以下核心能力：  
+ChatBot 是基于 WPF MVVM设计模式和LLamaSharp开发的本地大模型简单对话应用，具备以下核心能力：  
 - **模型支持**：支持`gguf` 格式大语言模型。  
 - **交互体验**：采用气泡式对话框。  
 - **性能加速**：集成 Vulkan GPU 加速。  
